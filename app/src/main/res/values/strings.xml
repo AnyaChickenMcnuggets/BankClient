@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">BankClient</string>
+    <string name="welcome_message">Привет</string>
+    <string name="client_name">Степанов Николай</string>
+
+</resources>
