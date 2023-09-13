@@ -8,8 +8,17 @@
     <color name="purple_700">#FF370083</color>
     <color name="teal_200">#FF03DAC5</color>
     <!--CustomColor-->
-    <color name="background">#E8E8F9</color>
     <color name="purple">#5E3BEE</color>
     <color name="dark_blue">#1E4368</color>
     <color name="grey">#E8E6F5</color>
+
+    <color name="primary">#6A7CFF</color>
+    <color name="background">#F7F7FA</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="primary_text">#565B65</color>
+    <color name="secondary_text">#9B9A9D</color>
+    <color name="dashboard_item_1">#2CC2EA</color>
+    <color name="dashboard_item_2">#4DE9C9</color>
+    <color name="dashboard_item_3">#72A4FF</color>
+    <color name="dashboard_item_4">#8B72FF</color>
 </resources>

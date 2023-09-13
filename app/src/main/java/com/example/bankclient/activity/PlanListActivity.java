@@ -1,4 +1,4 @@
-package com.example.bankclient;
+package com.example.bankclient.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,21 +10,32 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.bankclient.R;
+import com.example.bankclient.adapter.PlanAdapter;
+import com.example.bankclient.model.Plan;
 
-    Button planButton;
+import java.util.ArrayList;
+
+public class PlanListActivity extends AppCompatActivity {
+    ListView listPlan;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        planButton = findViewById(R.id.buttonPiggyBig);
-        planButton.setOnClickListener(v -> showPopUp());
+        setContentView(R.layout.activity_plan_list);
+        listPlan = findViewById(R.id.listPlan);
+        ArrayList<Plan> arr = new ArrayList<>();
+        while (arr.size()<10){
+            arr.add(new Plan());
+        }
+        PlanAdapter adapter = new PlanAdapter(this, 0, arr);
+        listPlan.setAdapter(adapter);
+        listPlan.setOnItemClickListener((parent, view, position, id) -> showPopUp());
     }
-
     private void showPopUp() {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -35,10 +46,10 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout deleteLayout = dialog.findViewById(R.id.layoutDelete);
         LinearLayout updateLayout = dialog.findViewById(R.id.layoutUpdate);
 
-        editLayout.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Edit", Toast.LENGTH_SHORT).show());
-        shareLayout.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Share", Toast.LENGTH_SHORT).show());
-        deleteLayout.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Delete", Toast.LENGTH_SHORT).show());
-        updateLayout.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Update", Toast.LENGTH_SHORT).show());
+        editLayout.setOnClickListener(v -> Toast.makeText(PlanListActivity.this, "Edit", Toast.LENGTH_SHORT).show());
+        shareLayout.setOnClickListener(v -> Toast.makeText(PlanListActivity.this, "Share", Toast.LENGTH_SHORT).show());
+        deleteLayout.setOnClickListener(v -> Toast.makeText(PlanListActivity.this, "Delete", Toast.LENGTH_SHORT).show());
+        updateLayout.setOnClickListener(v -> Toast.makeText(PlanListActivity.this, "Update", Toast.LENGTH_SHORT).show());
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
