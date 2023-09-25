@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">BankClient</string>
     <string name="welcome_message">Привет</string>
-    <string name="client_name">Степанов Николай</string>
+    <string name="client_name">Шайдуллин Илиан</string>
     <string name="header_option">Опции</string>
     <string name="edit_option">Редактировать</string>
     <string name="update_option">Обновить</string>

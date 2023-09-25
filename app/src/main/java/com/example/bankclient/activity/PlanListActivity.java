@@ -3,6 +3,7 @@ package com.example.bankclient.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bankclient.R;
@@ -23,10 +25,12 @@ import java.util.ArrayList;
 
 public class PlanListActivity extends AppCompatActivity {
     ListView listPlan;
+    TextView addPlan;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_list);
+        addPlan = findViewById(R.id.add_plan);
         listPlan = findViewById(R.id.listPlan);
         ArrayList<Plan> arr = new ArrayList<>();
         while (arr.size()<10){
@@ -35,6 +39,13 @@ public class PlanListActivity extends AppCompatActivity {
         PlanAdapter adapter = new PlanAdapter(this, 0, arr);
         listPlan.setAdapter(adapter);
         listPlan.setOnItemClickListener((parent, view, position, id) -> showPopUp());
+        addPlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PlanListActivity.this, AddActivity.class);
+                startActivity(intent);
+            }
+        });
     }
     private void showPopUp() {
         final Dialog dialog = new Dialog(this);
