@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:id="@+id/item_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@color/background">
     <RelativeLayout
         android:layout_marginVertical="5dp"
@@ -28,6 +29,7 @@
                 android:src="@drawable/bg_plan_item"/>
         </RelativeLayout>
         <ImageView
+            android:id="@+id/plan_response"
             android:layout_width="120dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_no_data"
@@ -52,6 +54,7 @@
                 android:src="@drawable/bg_status_ic"
                 android:layout_marginHorizontal="1dp"/>
             <ImageView
+                android:id="@+id/plan_status"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_warning"
@@ -66,6 +69,7 @@
             android:layout_marginTop="16dp">
 
             <TextView
+                android:id="@+id/plan_title"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:text="Название"
@@ -76,6 +80,7 @@
                 android:layout_weight="1"/>
 
             <TextView
+                android:id="@+id/plan_date"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -85,4 +90,4 @@
         </LinearLayout>
 
     </RelativeLayout>
-</RelativeLayout>
+</LinearLayout>
