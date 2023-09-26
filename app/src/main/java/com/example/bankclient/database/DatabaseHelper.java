@@ -72,7 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public int countAllPlans(){
         String query = "SELECT COUNT (*) FROM " + TABLE_NAME;
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor= db.rawQuery(query, null);
         cursor.moveToFirst();
         int count= cursor.getInt(0);
@@ -80,4 +80,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count;
     }
 
+    public int countNotUpdatedPlans() {
+        String query = "SELECT COUNT (*) FROM " + TABLE_NAME + " WHERE " + COLUMN_RESPONSE + "= 'no response'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor= db.rawQuery(query, null);
+        cursor.moveToFirst();
+        int count= cursor.getInt(0);
+        cursor.close();
+        return count;
+    }
+
+    public void deleteOnePlan(String plan_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete(TABLE_NAME, COLUMN_ID + " = ? ", new String[]{plan_id});
+        if (result==-1){
+            Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(context, "Успех", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

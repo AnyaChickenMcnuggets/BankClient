@@ -47,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onRestart();
         finish();
+        overridePendingTransition(0, 0);
         startActivity(getIntent());
+        overridePendingTransition(0, 0);
     }
 
 

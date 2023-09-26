@@ -1,8 +1,15 @@
 package com.example.bankclient.model;
 
 public class Plan {
-    String id;
+    String id, title, date, status, response;
 
+    public Plan(String id, String title, String date, String status, String response) {
+        this.id = id;
+        this.title = title;
+        this.date = date;
+        this.status = status;
+        this.response = response;
+    }
     public String getId() {
         return id;
     }
@@ -40,19 +47,6 @@ public class Plan {
     }
 
     public void setResponse(String response) {
-        this.response = response;
-    }
-
-    String title;
-    String date;
-    String status;
-    String response;
-
-    public Plan(String id, String title, String date, String status, String response) {
-        this.id = id;
-        this.title = title;
-        this.date = date;
-        this.status = status;
         this.response = response;
     }
 }

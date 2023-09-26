@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -20,17 +21,17 @@ import android.widget.Toast;
 import com.example.bankclient.R;
 import com.example.bankclient.adapter.PlanAdapter;
 import com.example.bankclient.database.DatabaseHelper;
+import com.example.bankclient.interface_helper.RecyclerViewInterface;
 import com.example.bankclient.model.Plan;
 
 import java.util.ArrayList;
 
-public class PlanListActivity extends AppCompatActivity {
+public class PlanListActivity extends AppCompatActivity implements RecyclerViewInterface {
     RecyclerView recyclerView;
     TextView addPlan;
-    TextView planCount;
+    TextView planCount, notUpdatedPlanCount;
 
     DatabaseHelper db;
-    ArrayList<String> plan_id, plan_title, plan_date, plan_status, plan_response;
     ArrayList<Plan> planArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +44,16 @@ public class PlanListActivity extends AppCompatActivity {
         planArrayList = new ArrayList<>();
         storeDataInArray();
 
-        PlanAdapter adapter = new PlanAdapter(PlanListActivity.this, planArrayList);
+        PlanAdapter adapter = new PlanAdapter(PlanListActivity.this, planArrayList, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(PlanListActivity.this));
+
         planCount = findViewById(R.id.plan_count);
-        // TODO обращаться к бд за ответами
-        planCount.setText(String.valueOf(recyclerView.getAdapter().getItemCount()));
+        planCount.setText(String.valueOf(db.countAllPlans()));
+
+        notUpdatedPlanCount = findViewById(R.id.not_updated_plan_count);
+        notUpdatedPlanCount.setText(String.valueOf(db.countNotUpdatedPlans()));
+
         addPlan.setOnClickListener(view -> {
             Intent intent = new Intent(PlanListActivity.this, AddActivity.class);
             startActivity(intent);
@@ -60,7 +65,9 @@ public class PlanListActivity extends AppCompatActivity {
     {
         super.onRestart();
         finish();
+        overridePendingTransition(0, 0);
         startActivity(getIntent());
+        overridePendingTransition(0, 0);
     }
 
     void storeDataInArray(){
@@ -80,4 +87,34 @@ public class PlanListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onItemClick(int position) {
+        showPopUp(this, planArrayList.get(position));
+    }
+
+    private void showPopUp(Context context, Plan plan) {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottom_dialog);
+
+        LinearLayout editLayout = dialog.findViewById(R.id.layoutEdit);
+        LinearLayout shareLayout = dialog.findViewById(R.id.layoutShare);
+        LinearLayout deleteLayout = dialog.findViewById(R.id.layoutDelete);
+        LinearLayout updateLayout = dialog.findViewById(R.id.layoutUpdate);
+
+        editLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Edit", Toast.LENGTH_SHORT).show());
+        shareLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Share", Toast.LENGTH_SHORT).show());
+        deleteLayout.setOnClickListener(v -> {
+            DatabaseHelper db = new DatabaseHelper(dialog.getContext());
+            dialog.dismiss();
+            db.deleteOnePlan(plan.getId());
+            onRestart();
+        });
+        updateLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Update", Toast.LENGTH_SHORT).show());
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
 }
