@@ -1,6 +1,7 @@
 package com.example.bankclient.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseHelper db;
     TextView textViewPlansBigStatus;
     Button planButton;
+    ImageButton incomeButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +42,16 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, PlanListActivity.class);
             startActivity(intent);
         });
+        incomeButton = findViewById(R.id.incomeButton);
+        incomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, IncomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         db = new DatabaseHelper(MainActivity.this);
         textViewPlansBigStatus = findViewById(R.id.textViewPlansBigStatus);
         textViewPlansBigStatus.setText(String.valueOf(db.countAllPlans()));

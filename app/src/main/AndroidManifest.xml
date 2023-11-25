@@ -13,9 +13,17 @@
         android:theme="@style/Theme.BankClient"
         tools:targetApi="31">
         <activity
+            android:name=".activity.AddIEActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.IncomeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_income"
+            android:theme="@style/Theme.BankClient" />
+        <activity
             android:name=".activity.AddActivity"
             android:exported="false"
-            android:parentActivityName=".activity.PlanListActivity"/>
+            android:parentActivityName=".activity.PlanListActivity" />
         <activity
             android:name=".activity.PlanListActivity"
             android:exported="false"

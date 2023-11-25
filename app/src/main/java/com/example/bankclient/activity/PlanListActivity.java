@@ -103,14 +103,18 @@ public class PlanListActivity extends AppCompatActivity implements RecyclerViewI
         LinearLayout updateLayout = dialog.findViewById(R.id.layoutUpdate);
 
         editLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Edit", Toast.LENGTH_SHORT).show());
+
         shareLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Share", Toast.LENGTH_SHORT).show());
+
         deleteLayout.setOnClickListener(v -> {
             DatabaseHelper db = new DatabaseHelper(dialog.getContext());
             dialog.dismiss();
             db.deleteOnePlan(plan.getId());
             onRestart();
         });
+
         updateLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Update", Toast.LENGTH_SHORT).show());
+
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
