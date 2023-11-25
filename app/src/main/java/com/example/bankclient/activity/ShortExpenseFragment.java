@@ -24,25 +24,23 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link LongIncomeFragment#newInstance} factory method to
+ * Use the {@link ShortExpenseFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LongIncomeFragment extends Fragment implements RecyclerViewInterface {
-
+public class ShortExpenseFragment extends Fragment implements RecyclerViewInterface {
+    RecyclerView rv;
+    DatabaseHelper db;
+    ArrayList<IncomeExpense> shortExpenseList;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    RecyclerView rv;
-    DatabaseHelper db;
-    ArrayList<IncomeExpense> longIncomeList;
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public LongIncomeFragment() {
+    public ShortExpenseFragment() {
         // Required empty public constructor
     }
 
@@ -52,11 +50,11 @@ public class LongIncomeFragment extends Fragment implements RecyclerViewInterfac
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment LongIncome.
+     * @return A new instance of fragment ShortExpenseFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static LongIncomeFragment newInstance(String param1, String param2) {
-        LongIncomeFragment fragment = new LongIncomeFragment();
+    public static ShortExpenseFragment newInstance(String param1, String param2) {
+        ShortExpenseFragment fragment = new ShortExpenseFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -71,38 +69,34 @@ public class LongIncomeFragment extends Fragment implements RecyclerViewInterfac
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        return inflater.inflate(R.layout.fragment_long_income, container, false);
+        return inflater.inflate(R.layout.fragment_short_expense, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        rv = view.findViewById(R.id.longIncomeList);
+        rv = view.findViewById(R.id.shortExpenseList);
         db = new DatabaseHelper(rv.getContext());
-        longIncomeList = new ArrayList<>();
+        shortExpenseList = new ArrayList<>();
         storeDataInArray();
-        IEAdapter adapter = new IEAdapter(rv.getContext(), longIncomeList, this);
+        IEAdapter adapter = new IEAdapter(rv.getContext(), shortExpenseList, this);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(rv.getContext()));
     }
 
     void storeDataInArray(){
-        Cursor cursor = db.readAllLongIncome();
+        Cursor cursor = db.readAllShortExpense();
         if (cursor.getCount()==0){
             Toast.makeText(rv.getContext(), "No Data", Toast.LENGTH_SHORT).show();
         }else {
             while (cursor.moveToNext()){
-                longIncomeList.add(new IncomeExpense(
+                shortExpenseList.add(new IncomeExpense(
                         cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),

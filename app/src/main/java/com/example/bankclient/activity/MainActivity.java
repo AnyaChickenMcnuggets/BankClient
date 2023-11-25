@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseHelper db;
     TextView textViewPlansBigStatus;
     Button planButton;
-    ImageButton incomeButton;
+    ImageButton incomeButton, expenseButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,14 +43,15 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
         incomeButton = findViewById(R.id.incomeButton);
-        incomeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, IncomeActivity.class);
-                startActivity(intent);
-            }
+        incomeButton.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, IncomeActivity.class);
+            startActivity(intent);
         });
-
+        expenseButton = findViewById(R.id.expenseButton);
+        expenseButton.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, ExpenseActivity.class);
+            startActivity(intent);
+        });
 
         db = new DatabaseHelper(MainActivity.this);
         textViewPlansBigStatus = findViewById(R.id.textViewPlansBigStatus);

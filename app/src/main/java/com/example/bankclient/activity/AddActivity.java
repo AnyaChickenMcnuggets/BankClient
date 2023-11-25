@@ -13,9 +13,7 @@ import android.widget.EditText;
 import com.example.bankclient.R;
 import com.example.bankclient.database.DatabaseHelper;
 
-import java.sql.Time;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class AddActivity extends AppCompatActivity {
 
@@ -27,7 +25,7 @@ public class AddActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add);
+        setContentView(R.layout.activity_add_plan);
         autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
         adapter = new ArrayAdapter<>(this, R.layout.dropdown_item, itemList);
         autoCompleteTextView.setAdapter(adapter);
@@ -39,16 +37,13 @@ public class AddActivity extends AppCompatActivity {
         });
         title = findViewById(R.id.title_input);
         addButton = findViewById(R.id.add_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatabaseHelper db = new DatabaseHelper(AddActivity.this);
-                db.addPlan(
-                        title.getText().toString().trim(),
-                        LocalDateTime.now().toLocalDate().toString().trim(),
-                        "problem",
-                        "no response");
-            }
+        addButton.setOnClickListener(view -> {
+            DatabaseHelper db = new DatabaseHelper(AddActivity.this);
+            db.addPlan(
+                    title.getText().toString().trim(),
+                    LocalDateTime.now().toLocalDate().toString().trim(),
+                    "problem",
+                    "no response");
         });
     }
 }

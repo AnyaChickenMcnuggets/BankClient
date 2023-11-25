@@ -30,16 +30,16 @@ public class IEAdapter extends RecyclerView.Adapter<IEAdapter.ViewHolder> {
 
     @NonNull
     @Override
-    public IEAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.ie_item_rel, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.ie_item_rel, parent, false);
 
-        return new IEAdapter.ViewHolder(view, recyclerViewInterface);
+        return new ViewHolder(view, recyclerViewInterface);
     }
 
     @Override
     public void onBindViewHolder(@NonNull IEAdapter.ViewHolder holder, int position) {
-
+        holder.titleView.setText(String.valueOf(ieArrayList.get(position).getTitle()));
+        holder.sumView.setText(String.valueOf(ieArrayList.get(position).getSum()));
     }
 
     @Override

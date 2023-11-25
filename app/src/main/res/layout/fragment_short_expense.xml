@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background"
-    tools:context=".activity.LongIncomeFragment">
+    tools:context=".activity.ShortExpenseFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/longIncomeList"
+        android:id="@+id/shortExpenseList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_14sdp"

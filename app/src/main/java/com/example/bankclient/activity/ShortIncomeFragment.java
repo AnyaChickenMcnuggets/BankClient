@@ -1,22 +1,36 @@
 package com.example.bankclient.activity;
 
+import android.database.Cursor;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.bankclient.R;
+import com.example.bankclient.adapter.IEAdapter;
+import com.example.bankclient.database.DatabaseHelper;
+import com.example.bankclient.interface_helper.RecyclerViewInterface;
+import com.example.bankclient.model.IncomeExpense;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ShortIncomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ShortIncomeFragment extends Fragment {
-
+public class ShortIncomeFragment extends Fragment implements RecyclerViewInterface {
+    RecyclerView rv;
+    DatabaseHelper db;
+    ArrayList<IncomeExpense> shortIncomeList;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -61,6 +75,43 @@ public class ShortIncomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_short_income, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        rv = view.findViewById(R.id.shortIncomeList);
+        db = new DatabaseHelper(rv.getContext());
+        shortIncomeList = new ArrayList<>();
+        storeDataInArray();
+        IEAdapter adapter = new IEAdapter(rv.getContext(), shortIncomeList, this);
+        rv.setAdapter(adapter);
+        rv.setLayoutManager(new LinearLayoutManager(rv.getContext()));
+    }
+
+    void storeDataInArray(){
+        Cursor cursor = db.readAllShortIncome();
+        if (cursor.getCount()==0){
+            Toast.makeText(rv.getContext(), "No Data", Toast.LENGTH_SHORT).show();
+        }else {
+            while (cursor.moveToNext()){
+                shortIncomeList.add(new IncomeExpense(
+                        cursor.getString(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        Boolean.getBoolean(cursor.getString(4)),
+                        Boolean.getBoolean(cursor.getString(5))));
+            }
+
+        }
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
     }
 }

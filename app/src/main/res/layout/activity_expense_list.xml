@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".activity.ExpenseActivity"
     android:background="@color/background">
-
-
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switchIncome"
+        android:id="@+id/switchExpense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
-        android:text="Постоянные доходы"
-        android:textOff="Постоянные доходы"
-        android:textOn="Переменные доходы"
+        android:text="Постоянные расходы"
+        android:textOff="Постоянные расходы"
+        android:textOn="Переменные расходы"
         android:textSize="8pt"
         android:textColor="@color/dark_blue"
         app:layout_constraintEnd_toStartOf="@+id/add_button"
@@ -23,13 +22,13 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
-        android:name="com.example.bankclient.activity.LongIncomeFragment"
+        android:name="com.example.bankclient.activity.LongExpenseFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/switchIncome" />
+        app:layout_constraintTop_toBottomOf="@id/switchExpense" />
 
     <Button
         android:id="@+id/add_button"
@@ -41,4 +40,5 @@
         android:text="Добавить"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,10 +46,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         query=
                 "CREATE TABLE " + IETABLE_NAME+
                         " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        IECOLUMN_SUM + " TEXT, " +
                         IECOLUMN_TITLE + " TEXT, " +
-                        IECOLUMN_LONG + " TEXT, " +
+                        IECOLUMN_SUM + " TEXT, " +
                         IECOLUMN_DATE + " TEXT, " +
+                        IECOLUMN_LONG + " TEXT, " +
                         IECOLUMN_INCOME + " TEXT);";
         db.execSQL(query);
     }
@@ -77,7 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addIE(String title, String sum, String date, Boolean isLong, Boolean isIncome){
+    public void addIE(String title, String sum, String date, String isLong, String isIncome){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 

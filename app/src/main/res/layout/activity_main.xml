@@ -202,9 +202,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@drawable/white_background">
-
-                        <ImageView
-                            android:id="@+id/imageViewPiggy"
+                        <ImageButton
+                            android:id="@+id/expenseButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="16dp"
@@ -212,7 +211,10 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ic_piggy" />
+                            app:srcCompat="@drawable/ic_piggy"
+                            android:background="@color/white"
+                            android:layout_gravity="center"/>
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
