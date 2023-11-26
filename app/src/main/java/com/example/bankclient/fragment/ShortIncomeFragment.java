@@ -1,6 +1,10 @@
 package com.example.bankclient.fragment;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,9 +13,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.bankclient.R;
@@ -104,7 +111,8 @@ public class ShortIncomeFragment extends Fragment implements RecyclerViewInterfa
                         cursor.getString(2),
                         cursor.getString(3),
                         Boolean.valueOf(cursor.getString(4)),
-                        Boolean.valueOf(cursor.getString(5))));
+                        Boolean.valueOf(cursor.getString(5)),
+                        cursor.getString(6)));
             }
 
         }
@@ -112,6 +120,31 @@ public class ShortIncomeFragment extends Fragment implements RecyclerViewInterfa
 
     @Override
     public void onItemClick(int position) {
+        showPopUp(rv.getContext(), shortIncomeList.get(position));
+    }
+    private void showPopUp(Context context, IncomeExpense ie) {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottom_dialog_ie);
 
+        LinearLayout editLayout = dialog.findViewById(R.id.layoutEdit);
+        LinearLayout deleteLayout = dialog.findViewById(R.id.layoutDelete);
+
+        editLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Edit", Toast.LENGTH_SHORT).show());
+
+
+        deleteLayout.setOnClickListener(v -> {
+            DatabaseHelper db = new DatabaseHelper(dialog.getContext());
+            dialog.dismiss();
+            db.deleteIE(ie.getId());
+            getActivity().recreate();
+        });
+
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 }

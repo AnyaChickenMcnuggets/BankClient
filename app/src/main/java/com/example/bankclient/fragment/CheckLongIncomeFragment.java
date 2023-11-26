@@ -115,7 +115,8 @@ public class CheckLongIncomeFragment extends Fragment implements ItemClickListen
                         cursor.getString(2),
                         cursor.getString(3),
                         Boolean.valueOf(cursor.getString(4)),
-                        Boolean.valueOf(cursor.getString(5))));
+                        Boolean.valueOf(cursor.getString(5)),
+                        cursor.getString(6)));
             }
 
         }

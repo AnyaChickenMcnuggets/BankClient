@@ -2,16 +2,25 @@ package com.example.bankclient.model;
 
 
 public class IncomeExpense {
-    String id, title, sum, date;
+    String id, title, sum, date, period;
     Boolean isLong, isIncome;
 
-    public IncomeExpense(String id, String title, String sum, String date, Boolean isLong, Boolean isIncome) {
+    public IncomeExpense(String id, String title, String sum, String date, Boolean isLong, Boolean isIncome, String period) {
         this.id = id;
         this.title = title;
         this.sum = sum;
         this.date = date;
         this.isLong = isLong;
         this.isIncome = isIncome;
+        this.period = period;
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
     }
 
     public Boolean getIncome() {

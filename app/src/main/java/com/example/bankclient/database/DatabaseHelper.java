@@ -27,6 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String IECOLUMN_LONG="ie_long";
     private static final String IECOLUMN_DATE="ie_date";
     private static final String IECOLUMN_INCOME="ie_income";
+    private static final String IECOLUMN_PERIOD="ie_period";
 
     private static final String BPTABLE_NAME="bank_products";
     private static final String BPCOLUMN_TITLE="bp_title";
@@ -56,7 +57,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         IECOLUMN_SUM + " TEXT, " +
                         IECOLUMN_DATE + " TEXT, " +
                         IECOLUMN_LONG + " TEXT, " +
-                        IECOLUMN_INCOME + " TEXT);";
+                        IECOLUMN_INCOME + " TEXT, " +
+                        IECOLUMN_PERIOD + " TEXT);";
         db.execSQL(query);
         query=
                 "CREATE TABLE " + BPTABLE_NAME+
@@ -109,7 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addIE(String title, String sum, String date, String isLong, String isIncome){
+    public void addIE(String title, String sum, String date, String isLong, String isIncome, String period){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -118,6 +120,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(IECOLUMN_SUM, sum);
         cv.put(IECOLUMN_LONG, isLong);
         cv.put(IECOLUMN_INCOME, isIncome);
+        cv.put(IECOLUMN_PERIOD, period);
+
         long result = db.insert(IETABLE_NAME, null, cv);
         if (result==-1){
             Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
@@ -257,6 +261,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteOnePlan(String plan_id){
         SQLiteDatabase db = this.getWritableDatabase();
         long result = db.delete(TABLE_NAME, COLUMN_ID + " = ? ", new String[]{plan_id});
+        if (result==-1){
+            Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(context, "Успех", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void deleteIE(String ie_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete(IETABLE_NAME, COLUMN_ID + " = ? ", new String[]{ie_id});
         if (result==-1){
             Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
         }else {

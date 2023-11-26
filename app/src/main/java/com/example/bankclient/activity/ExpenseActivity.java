@@ -58,7 +58,15 @@ public class ExpenseActivity extends AppCompatActivity {
             }
         });
     }
-
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+    }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_CANCEL) this.finish();
