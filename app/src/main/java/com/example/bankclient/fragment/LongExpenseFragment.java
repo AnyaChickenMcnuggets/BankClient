@@ -2,6 +2,7 @@ package com.example.bankclient.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -22,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.bankclient.R;
+import com.example.bankclient.activity.EditIEActivity;
 import com.example.bankclient.adapter.IEAdapter;
 import com.example.bankclient.database.DatabaseHelper;
 import com.example.bankclient.interface_helper.RecyclerViewInterface;
@@ -126,8 +128,17 @@ public class LongExpenseFragment extends Fragment implements RecyclerViewInterfa
         LinearLayout editLayout = dialog.findViewById(R.id.layoutEdit);
         LinearLayout deleteLayout = dialog.findViewById(R.id.layoutDelete);
 
-        editLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Edit", Toast.LENGTH_SHORT).show());
-
+        editLayout.setOnClickListener(view -> {
+            Intent intent = new Intent(context, EditIEActivity.class);
+            intent.putExtra("id", ie.getId());
+            intent.putExtra("title", ie.getTitle());
+            intent.putExtra("long", ie.getLong());
+            intent.putExtra("income", ie.getIncome());
+            intent.putExtra("date", ie.getDate());
+            intent.putExtra("period", ie.getPeriod());
+            intent.putExtra("sum", ie.getSum());
+            startActivity(intent);
+        });
 
         deleteLayout.setOnClickListener(v -> {
             DatabaseHelper db = new DatabaseHelper(dialog.getContext());

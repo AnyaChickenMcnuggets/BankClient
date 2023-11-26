@@ -5,7 +5,7 @@
     <string name="header_option">Опции</string>
     <string name="edit_option">Редактировать</string>
     <string name="update_option">Обновить</string>
-    <string name="share_option">Поделиться</string>
+    <string name="peek_option">Посмотреть</string>
     <string name="delete_option">Удалить</string>
     <string name="title_activity_plan_list">PlanListActivity</string>
     <!-- Strings used for fragments for navigation -->

@@ -98,13 +98,13 @@ public class PlanListActivity extends AppCompatActivity implements RecyclerViewI
         dialog.setContentView(R.layout.bottom_dialog);
 
         LinearLayout editLayout = dialog.findViewById(R.id.layoutEdit);
-        LinearLayout shareLayout = dialog.findViewById(R.id.layoutShare);
+        LinearLayout peekLayout = dialog.findViewById(R.id.layoutPeek);
         LinearLayout deleteLayout = dialog.findViewById(R.id.layoutDelete);
         LinearLayout updateLayout = dialog.findViewById(R.id.layoutUpdate);
 
-        editLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Edit", Toast.LENGTH_SHORT).show());
+        editLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Изменить", Toast.LENGTH_SHORT).show());
 
-        shareLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Share", Toast.LENGTH_SHORT).show());
+        peekLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Посмотреть", Toast.LENGTH_SHORT).show());
 
         deleteLayout.setOnClickListener(v -> {
             DatabaseHelper db = new DatabaseHelper(dialog.getContext());
@@ -113,7 +113,7 @@ public class PlanListActivity extends AppCompatActivity implements RecyclerViewI
             onRestart();
         });
 
-        updateLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Update", Toast.LENGTH_SHORT).show());
+        updateLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Обновить", Toast.LENGTH_SHORT).show());
 
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

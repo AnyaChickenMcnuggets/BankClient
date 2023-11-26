@@ -29,6 +29,8 @@ public class AddPlanActivity extends AppCompatActivity {
 
     ImageButton addIE, addMyBank;
     String[] ids;
+    Button addButton;
+    EditText editSum, editTitle;
     ArrayList<UsedBankProduct> addProduct;
     ActivityResultLauncher<Intent> getResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -60,14 +62,20 @@ public class AddPlanActivity extends AppCompatActivity {
             Intent intent = new Intent(AddPlanActivity.this, AddBankProductActivity.class);
             getResult.launch(intent);
         });
-
-//        addButton.setOnClickListener(view -> {
-//            DatabaseHelper db = new DatabaseHelper(AddPlanActivity.this);
-//            db.addPlan(
-//                    title.getText().toString().trim(),
-//                    LocalDateTime.now().toLocalDate().toString().trim(),
-//                    "problem",
-//                    "no response");
-//        });
+        addButton = findViewById(R.id.addButton);
+        editTitle = findViewById(R.id.editTitle);
+        editSum = findViewById(R.id.editSum);
+        addButton.setOnClickListener(view -> {
+            DatabaseHelper db = new DatabaseHelper(AddPlanActivity.this);
+            db.addPlan(
+                    editTitle.getText().toString().trim(),
+                    LocalDateTime.now().toLocalDate().toString().trim(),
+                    editSum.getText().toString().trim(),
+                    ids,
+                    addProduct,
+                    "problem",
+                    "no response");
+            finish();
+        });
     }
 }

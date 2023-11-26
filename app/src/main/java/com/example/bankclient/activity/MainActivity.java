@@ -58,7 +58,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
         db = new DatabaseHelper(MainActivity.this);
-
+//        db.addStartProduct("вклад 1", "24", "13%", "true");
+//        db.addStartProduct("вклад 2", "13", "9%", "true");
+//        db.addStartProduct("кредит 1", "12", "24%", "false");
+//        db.addStartProduct("кредит 2", "60", "22%", "false");
         textViewPlansBigStatus = findViewById(R.id.textViewPlansBigStatus);
         textViewPlansBigStatus.setText(String.valueOf(db.countAllPlans()));
     }
