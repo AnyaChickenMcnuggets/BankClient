@@ -28,6 +28,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String IECOLUMN_DATE="ie_date";
     private static final String IECOLUMN_INCOME="ie_income";
 
+    private static final String BPTABLE_NAME="bank_products";
+    private static final String BPCOLUMN_TITLE="bp_title";
+    private static final String BPCOLUMN_DATE="bp_date";
+    private static final String BPCOLUMN_PERCENTAGE="bp_percentage";
+    private static final String BPCOLUMN_INCOME="bp_income";
+
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
@@ -52,13 +58,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         IECOLUMN_LONG + " TEXT, " +
                         IECOLUMN_INCOME + " TEXT);";
         db.execSQL(query);
+        query=
+                "CREATE TABLE " + BPTABLE_NAME+
+                        " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        BPCOLUMN_TITLE + " TEXT, " +
+                        BPCOLUMN_DATE + " TEXT, " +
+                        BPCOLUMN_PERCENTAGE + " TEXT, " +
+                        BPCOLUMN_INCOME + " TEXT);";
+        db.execSQL(query);
+
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + IETABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + BPTABLE_NAME);
         onCreate(db);
+    }
+    public void addStartProduct(String title, String date, String percentage, String income){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(BPCOLUMN_TITLE, title);
+        cv.put(BPCOLUMN_DATE, date);
+        cv.put(BPCOLUMN_PERCENTAGE, percentage);
+        cv.put(BPCOLUMN_INCOME, income);
+        long result = db.insert(BPTABLE_NAME, null, cv);
+        if (result==-1){
+            Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(context, "Успех", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void addPlan(String title, String date, String status, String response){
@@ -92,6 +124,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }else {
             Toast.makeText(context, "Успех", Toast.LENGTH_SHORT).show();
         }
+    }
+    public Cursor readAllBankIncome(){
+        String query = "SELECT * FROM " + BPTABLE_NAME +
+                " WHERE " + BPCOLUMN_INCOME + " = 'true'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if (db!=null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+    public Cursor readAllBankExpense(){
+        String query = "SELECT * FROM " + BPTABLE_NAME +
+                " WHERE " + BPCOLUMN_INCOME + " = 'false'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if (db!=null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
     }
     public Cursor readAllLongIncome(){
         String query = "SELECT * FROM " + IETABLE_NAME +

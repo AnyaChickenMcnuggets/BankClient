@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseHelper db;
     TextView textViewPlansBigStatus;
     Button planButton;
-    ImageButton incomeButton, expenseButton;
+    ImageButton incomeButton, expenseButton, productsButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +52,13 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ExpenseActivity.class);
             startActivity(intent);
         });
-
+        productsButton = findViewById(R.id.productsButton);
+        productsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, BankProductListActivity.class);
+            startActivity(intent);
+        });
         db = new DatabaseHelper(MainActivity.this);
+
         textViewPlansBigStatus = findViewById(R.id.textViewPlansBigStatus);
         textViewPlansBigStatus.setText(String.valueOf(db.countAllPlans()));
     }

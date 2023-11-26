@@ -13,6 +13,9 @@
         android:theme="@style/Theme.BankClient"
         tools:targetApi="31">
         <activity
+            android:name=".activity.BankProductListActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.SelectIncomeExpenseActivity"
             android:exported="false" />
         <activity

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class AddPlanActivity extends AppCompatActivity {
 
-    ImageButton addShortIncome, addLongIncome, addShortExpense, addLongExpense, addNewBank, addMyBank;
+    ImageButton addIE, addMyBank;
     String[] ids;
     ActivityResultLauncher<Intent> getResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -42,19 +42,12 @@ public class AddPlanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_plan);
-        addNewBank = findViewById(R.id.addNewBank);
-        addShortIncome = findViewById(R.id.addShortIncome);
-//        addLongIncome = findViewById(R.id.addLongIncome);
-//        addShortExpense = findViewById(R.id.addShortExpense);
-//        addLongExpense = findViewById(R.id.addLongExpense);
-//        addMyBank = findViewById(R.id.addMyBank);
+        addMyBank = findViewById(R.id.addMyBank);
+        addIE = findViewById(R.id.addShortIncome);
 
-        addShortIncome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AddPlanActivity.this, SelectIncomeExpenseActivity.class);
-                getResult.launch(intent);
-            }
+        addIE.setOnClickListener(view -> {
+            Intent intent = new Intent(AddPlanActivity.this, SelectIncomeExpenseActivity.class);
+            getResult.launch(intent);
         });
 
 

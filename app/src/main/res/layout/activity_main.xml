@@ -126,15 +126,16 @@
                         android:layout_gravity="center"
                         android:background="@drawable/white_background">
 
-                        <ImageView
+                        <ImageButton
                             android:id="@+id/imageViewSettings"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_margin="6dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
+                            android:background="@color/white"
                             app:srcCompat="@drawable/ic_settings" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -165,9 +166,9 @@
                         android:background="@drawable/white_background">
                         <ImageButton
                             android:id="@+id/incomeButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_margin="6dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -204,9 +205,9 @@
                         android:background="@drawable/white_background">
                         <ImageButton
                             android:id="@+id/expenseButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_margin="6dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -242,15 +243,16 @@
                         android:layout_gravity="center"
                         android:background="@drawable/white_background">
 
-                        <ImageView
-                            android:id="@+id/imageViewProducts"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
+                        <ImageButton
+                            android:id="@+id/productsButton"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_margin="6dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
+                            android:background="@color/white"
                             app:srcCompat="@drawable/ic_products" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
