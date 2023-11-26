@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.Button;
+import android.widget.CompoundButton;
 
 import com.example.bankclient.R;
 import com.example.bankclient.fragment.LongIncomeFragment;
@@ -31,13 +32,11 @@ public class IncomeActivity extends AppCompatActivity {
         }
 
         addButton = findViewById(R.id.add_button);
-        addButton.setOnClickListener(view -> {
-            Intent intent = new Intent(IncomeActivity.this, AddIEActivity.class);
-            startActivity(intent);
-        });
+
 
         switchCompat = findViewById(R.id.switchIncome);
-        switchCompat.setOnClickListener(view -> {
+
+        switchCompat.setOnCheckedChangeListener((compoundButton, b) -> {
             if (switchCompat.isChecked()){
                 switchCompat.setText(switchCompat.getTextOn());
                 FragmentManager fragmentManager = getSupportFragmentManager();
@@ -56,6 +55,12 @@ public class IncomeActivity extends AppCompatActivity {
                         .addToBackStack("name1")
                         .commit();
             }
+        });
+        addButton.setOnClickListener(view -> {
+            Intent intent = new Intent(IncomeActivity.this, AddIEActivity.class);
+            intent.putExtra("isExpense", false);
+            intent.putExtra("isLong", !switchCompat.isChecked());
+            startActivity(intent);
         });
     }
     @Override

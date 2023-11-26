@@ -51,6 +51,8 @@ public class AddIEActivity extends AppCompatActivity {
         autoComplete = findViewById(R.id.autoComplete);
         sumText.setInputType(InputType.TYPE_CLASS_NUMBER);
         textInputLayout = findViewById(R.id.textInputLayout);
+        checkLong.setChecked(getIntent().getBooleanExtra("isLong", false));
+        switchIE.setChecked(getIntent().getBooleanExtra("isExpense", false));
 
 
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.bp_dropdown_item, periods);
@@ -75,6 +77,18 @@ public class AddIEActivity extends AppCompatActivity {
                 textInputLayout.setVisibility(View.GONE);
             }
         });
+        if (switchIE.isChecked()) {
+            switchIE.setText(switchIE.getTextOn());
+        } else {
+            switchIE.setText(switchIE.getTextOff());
+        }
+
+        if (checkLong.isChecked()) {
+            textInputLayout.setVisibility(View.VISIBLE);
+        } else {
+            textInputLayout.setVisibility(View.GONE);
+        }
+
 
         save.setOnClickListener(view -> {
             if (titleText.getText().toString().equals("") ||
