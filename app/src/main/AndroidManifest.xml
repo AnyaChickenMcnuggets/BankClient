@@ -13,6 +13,9 @@
         android:theme="@style/Theme.BankClient"
         tools:targetApi="31">
         <activity
+            android:name=".activity.SelectIncomeExpenseActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ExpenseActivity"
             android:exported="false" />
         <activity
@@ -24,7 +27,7 @@
             android:label="@string/title_activity_income"
             android:theme="@style/Theme.BankClient" />
         <activity
-            android:name=".activity.AddActivity"
+            android:name=".activity.AddPlanActivity"
             android:exported="false"
             android:parentActivityName=".activity.PlanListActivity" />
         <activity

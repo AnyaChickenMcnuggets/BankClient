@@ -39,7 +39,11 @@ public class IEAdapter extends RecyclerView.Adapter<IEAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull IEAdapter.ViewHolder holder, int position) {
         holder.titleView.setText(String.valueOf(ieArrayList.get(position).getTitle()));
-        holder.sumView.setText(String.valueOf(ieArrayList.get(position).getSum()));
+        if (ieArrayList.get(position).getIncome()){
+            holder.sumView.setText(String.valueOf(ieArrayList.get(position).getSum()));
+        }else {
+            holder.sumView.setText("-"+String.valueOf(ieArrayList.get(position).getSum()));
+        }
     }
 
     @Override

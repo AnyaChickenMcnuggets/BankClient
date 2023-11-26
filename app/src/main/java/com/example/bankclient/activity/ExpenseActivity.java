@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 import android.widget.Button;
 
 import com.example.bankclient.R;
+import com.example.bankclient.fragment.LongExpenseFragment;
+import com.example.bankclient.fragment.ShortExpenseFragment;
 
 public class ExpenseActivity extends AppCompatActivity {
 

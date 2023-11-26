@@ -1,4 +1,4 @@
-package com.example.bankclient.activity;
+package com.example.bankclient.fragment;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -24,23 +24,23 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ShortExpenseFragment#newInstance} factory method to
+ * Use the {@link LongExpenseFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ShortExpenseFragment extends Fragment implements RecyclerViewInterface {
-    RecyclerView rv;
-    DatabaseHelper db;
-    ArrayList<IncomeExpense> shortExpenseList;
+public class LongExpenseFragment extends Fragment implements RecyclerViewInterface {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    RecyclerView rv;
+    DatabaseHelper db;
+    ArrayList<IncomeExpense> longExpenseList;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public ShortExpenseFragment() {
+    public LongExpenseFragment() {
         // Required empty public constructor
     }
 
@@ -50,11 +50,11 @@ public class ShortExpenseFragment extends Fragment implements RecyclerViewInterf
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ShortExpenseFragment.
+     * @return A new instance of fragment LongExpenseFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ShortExpenseFragment newInstance(String param1, String param2) {
-        ShortExpenseFragment fragment = new ShortExpenseFragment();
+    public static LongExpenseFragment newInstance(String param1, String param2) {
+        LongExpenseFragment fragment = new LongExpenseFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -70,39 +70,37 @@ public class ShortExpenseFragment extends Fragment implements RecyclerViewInterf
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_short_expense, container, false);
-    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        rv = view.findViewById(R.id.shortExpenseList);
+        rv = view.findViewById(R.id.longExpenseList);
         db = new DatabaseHelper(rv.getContext());
-        shortExpenseList = new ArrayList<>();
+        longExpenseList = new ArrayList<>();
         storeDataInArray();
-        IEAdapter adapter = new IEAdapter(rv.getContext(), shortExpenseList, this);
+        IEAdapter adapter = new IEAdapter(rv.getContext(), longExpenseList, this);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(rv.getContext()));
     }
-
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_long_expense, container, false);
+    }
     void storeDataInArray(){
-        Cursor cursor = db.readAllShortExpense();
+        Cursor cursor = db.readAllLongExpense();
         if (cursor.getCount()==0){
             Toast.makeText(rv.getContext(), "No Data", Toast.LENGTH_SHORT).show();
         }else {
             while (cursor.moveToNext()){
-                shortExpenseList.add(new IncomeExpense(
+                longExpenseList.add(new IncomeExpense(
                         cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
-                        Boolean.getBoolean(cursor.getString(4)),
-                        Boolean.getBoolean(cursor.getString(5))));
+                        Boolean.valueOf(cursor.getString(4)),
+                        Boolean.valueOf(cursor.getString(5))));
             }
 
         }

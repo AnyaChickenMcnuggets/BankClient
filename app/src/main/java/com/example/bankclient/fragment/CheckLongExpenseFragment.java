@@ -1,4 +1,4 @@
-package com.example.bankclient.activity;
+package com.example.bankclient.fragment;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,34 +16,34 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.bankclient.R;
-import com.example.bankclient.adapter.IEAdapter;
+import com.example.bankclient.adapter.CheckIEAdapter;
 import com.example.bankclient.database.DatabaseHelper;
-import com.example.bankclient.interface_helper.RecyclerViewInterface;
+import com.example.bankclient.interface_helper.ItemClickListener;
 import com.example.bankclient.model.IncomeExpense;
+import com.example.bankclient.viewmodel.CheckIEViewModel;
 
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link LongIncomeFragment#newInstance} factory method to
+ * Use the {@link CheckLongExpenseFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LongIncomeFragment extends Fragment implements RecyclerViewInterface {
+public class CheckLongExpenseFragment extends Fragment implements ItemClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     RecyclerView rv;
     DatabaseHelper db;
-    ArrayList<IncomeExpense> longIncomeList;
-
+    ArrayList<IncomeExpense> longExpenseList;
+    CheckIEViewModel viewModel;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public LongIncomeFragment() {
+    public CheckLongExpenseFragment() {
         // Required empty public constructor
     }
 
@@ -52,11 +53,11 @@ public class LongIncomeFragment extends Fragment implements RecyclerViewInterfac
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment LongIncome.
+     * @return A new instance of fragment CheckLongExpenseFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static LongIncomeFragment newInstance(String param1, String param2) {
-        LongIncomeFragment fragment = new LongIncomeFragment();
+    public static CheckLongExpenseFragment newInstance(String param1, String param2) {
+        CheckLongExpenseFragment fragment = new CheckLongExpenseFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -71,51 +72,48 @@ public class LongIncomeFragment extends Fragment implements RecyclerViewInterfac
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        return inflater.inflate(R.layout.fragment_long_income, container, false);
+        return inflater.inflate(R.layout.fragment_check_long_expense, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(CheckIEViewModel.class);
 
-        rv = view.findViewById(R.id.longIncomeList);
+        rv = view.findViewById(R.id.longExpenseList);
         db = new DatabaseHelper(rv.getContext());
-        longIncomeList = new ArrayList<>();
+        longExpenseList = new ArrayList<>();
         storeDataInArray();
-        IEAdapter adapter = new IEAdapter(rv.getContext(), longIncomeList, this);
+        CheckIEAdapter adapter = new CheckIEAdapter(rv.getContext(), longExpenseList, viewModel, this);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(rv.getContext()));
     }
 
     void storeDataInArray(){
-        Cursor cursor = db.readAllLongIncome();
+        Cursor cursor = db.readAllLongExpense();
         if (cursor.getCount()==0){
             Toast.makeText(rv.getContext(), "No Data", Toast.LENGTH_SHORT).show();
         }else {
             while (cursor.moveToNext()){
-                longIncomeList.add(new IncomeExpense(
+                longExpenseList.add(new IncomeExpense(
                         cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
-                        Boolean.getBoolean(cursor.getString(4)),
-                        Boolean.getBoolean(cursor.getString(5))));
+                        Boolean.valueOf(cursor.getString(4)),
+                        Boolean.valueOf(cursor.getString(5))));
             }
 
         }
     }
 
     @Override
-    public void onItemClick(int position) {
-
+    public void onItemClick(ArrayList<IncomeExpense> al) {
+        this.viewModel.setData(al);
     }
 }

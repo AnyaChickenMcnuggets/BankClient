@@ -55,7 +55,7 @@ public class PlanListActivity extends AppCompatActivity implements RecyclerViewI
         notUpdatedPlanCount.setText(String.valueOf(db.countNotUpdatedPlans()));
 
         addPlan.setOnClickListener(view -> {
-            Intent intent = new Intent(PlanListActivity.this, AddActivity.class);
+            Intent intent = new Intent(PlanListActivity.this, AddPlanActivity.class);
             startActivity(intent);
         });
 

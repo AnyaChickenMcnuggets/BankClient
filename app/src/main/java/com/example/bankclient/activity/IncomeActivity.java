@@ -7,10 +7,11 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Button;
 
 import com.example.bankclient.R;
+import com.example.bankclient.fragment.LongIncomeFragment;
+import com.example.bankclient.fragment.ShortIncomeFragment;
 
 public class IncomeActivity extends AppCompatActivity {
 
