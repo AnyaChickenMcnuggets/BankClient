@@ -1,5 +1,8 @@
 package com.example.bankclient.model;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+
 public class Plan {
     String id, title, date, status, response;
 

@@ -147,6 +147,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return cursor;
     }
+    public Cursor readBankByTitle(String title){
+        String query = "SELECT * FROM " + BPTABLE_NAME +
+                " WHERE " + BPCOLUMN_TITLE + " = '" + title + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if (db!=null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+    public Cursor readAllBank(){
+        String query = "SELECT * FROM " + BPTABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if (db!=null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+    public Cursor readIEById(String id){
+        String query = "SELECT * FROM " + IETABLE_NAME +
+                " WHERE " + COLUMN_ID + " = '" + id+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if (db!=null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
     public Cursor readAllLongIncome(){
         String query = "SELECT * FROM " + IETABLE_NAME +
                 " WHERE " + IECOLUMN_INCOME + " = 'true' AND " + IECOLUMN_LONG + " = 'true'";

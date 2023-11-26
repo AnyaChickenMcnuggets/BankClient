@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import com.example.bankclient.R;
 import com.example.bankclient.database.DatabaseHelper;
 import com.example.bankclient.model.IncomeExpense;
+import com.example.bankclient.model.UsedBankProduct;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,12 +29,16 @@ public class AddPlanActivity extends AppCompatActivity {
 
     ImageButton addIE, addMyBank;
     String[] ids;
+    ArrayList<UsedBankProduct> addProduct;
     ActivityResultLauncher<Intent> getResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult o) {
             if (o!=null && o.getResultCode()==RESULT_OK){
                 if (o.getData()!=null && o.getData().getStringArrayExtra("checked")!=null){
                     ids = o.getData().getStringArrayExtra("checked");
+                }
+                if (o.getData()!=null && o.getData().getParcelableExtra("product")!=null){
+                    addProduct.add(o.getData().getParcelableExtra("product"));
                 }
             }
         }
@@ -44,12 +49,17 @@ public class AddPlanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_plan);
         addMyBank = findViewById(R.id.addMyBank);
         addIE = findViewById(R.id.addShortIncome);
-
+        addProduct = new ArrayList<>();
         addIE.setOnClickListener(view -> {
             Intent intent = new Intent(AddPlanActivity.this, SelectIncomeExpenseActivity.class);
+            if (ids != null)
+                intent.putExtra("checked", ids);
             getResult.launch(intent);
         });
-
+        addMyBank.setOnClickListener(view -> {
+            Intent intent = new Intent(AddPlanActivity.this, AddBankProductActivity.class);
+            getResult.launch(intent);
+        });
 
 //        addButton.setOnClickListener(view -> {
 //            DatabaseHelper db = new DatabaseHelper(AddPlanActivity.this);

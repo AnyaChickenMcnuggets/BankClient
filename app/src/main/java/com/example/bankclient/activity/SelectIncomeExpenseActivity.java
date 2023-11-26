@@ -6,12 +6,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.bankclient.R;
+import com.example.bankclient.database.DatabaseHelper;
 import com.example.bankclient.fragment.CheckLongExpenseFragment;
 import com.example.bankclient.fragment.CheckLongIncomeFragment;
 import com.example.bankclient.fragment.CheckShortExpenseFragment;
@@ -28,24 +31,51 @@ import java.util.stream.Collectors;
 
 public class SelectIncomeExpenseActivity extends AppCompatActivity {
 
-
+    DatabaseHelper db;
     Button submit, getLongIncome, getShortIncome, getLongExpense, getShortExpense;
     private CheckIEViewModel viewModel;
+    ArrayList<IncomeExpense> ieStart = new ArrayList<>();
+    String[] sid;
     public SelectIncomeExpenseActivity() {
         super(R.layout.activity_select_income_expense);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider(this).get(CheckIEViewModel.class);
+        if (getIntent().hasExtra("checked")){
+            sid = getIntent().getStringArrayExtra("checked");
+            db = new DatabaseHelper(SelectIncomeExpenseActivity.this);
+            for (String id:
+                 sid) {
+                Cursor cursor = db.readIEById(id);
+                if (cursor.getCount()==0){
+                    Toast.makeText(this, "No Data", Toast.LENGTH_SHORT).show();
+                }else {
+                    while (cursor.moveToNext()){
+                        ieStart.add(new IncomeExpense(
+                                cursor.getString(0),
+                                cursor.getString(1),
+                                cursor.getString(2),
+                                cursor.getString(3),
+                                Boolean.valueOf(cursor.getString(4)),
+                                Boolean.valueOf(cursor.getString(5))));
+                    }
+
+                }
+
+            }
+            viewModel.setData(ieStart);
+        }else {
+            viewModel.setData(new ArrayList<>());
+        }
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
                     .add(R.id.fragmentContainerView, CheckLongIncomeFragment.class, null)
                     .commit();
         }
-        viewModel = new ViewModelProvider(this).get(CheckIEViewModel.class);
-        if (viewModel.getList().getValue() == null)
-            viewModel.setData(new ArrayList<>());
+
         submit = findViewById(R.id.submit);
         getShortExpense = findViewById(R.id.getShortExpense);
         getLongExpense = findViewById(R.id.getLongExpense);
@@ -57,7 +87,7 @@ public class SelectIncomeExpenseActivity extends AppCompatActivity {
             List<String> ids = viewModel.getList().getValue().stream()
                     .map(IncomeExpense::getId)
                     .collect(Collectors.toList());
-            String[] sid = new String[ids.size()];
+            sid = new String[ids.size()];
             for (int i = 0; i < ids.size(); i++) sid[i] = ids.get(i);
             intent.putExtra("checked", sid);
             setResult(RESULT_OK, intent);
