@@ -13,39 +13,39 @@
         android:theme="@style/Theme.BankClient"
         tools:targetApi="31">
         <activity
-            android:name=".activity.EditIEActivity"
+            android:name=".ui.activities.EditIEActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.AddBankProductActivity"
+            android:name=".ui.activities.AddBankProductActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.BankProductListActivity"
+            android:name=".ui.activities.BankProductListActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.SelectIncomeExpenseActivity"
+            android:name=".ui.activities.SelectIncomeExpenseActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ExpenseActivity"
+            android:name=".ui.activities.ExpenseActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.AddIEActivity"
+            android:name=".ui.activities.AddIEActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.IncomeActivity"
+            android:name=".ui.activities.IncomeActivity"
             android:exported="false"
             android:label="@string/title_activity_income"
             android:theme="@style/Theme.BankClient" />
         <activity
-            android:name=".activity.AddPlanActivity"
+            android:name=".ui.activities.AddPlanActivity"
             android:exported="false"
-            android:parentActivityName=".activity.PlanListActivity" />
+            android:parentActivityName=".ui.activities.PlanListActivity" />
         <activity
-            android:name=".activity.PlanListActivity"
+            android:name=".ui.activities.PlanListActivity"
             android:exported="false"
             android:label="@string/title_activity_plan_list"
             android:theme="@style/Theme.BankClient" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

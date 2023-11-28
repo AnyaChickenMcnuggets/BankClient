@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E8E8F9"
-    tools:context=".activity.SelectIncomeExpenseActivity">
+    tools:context=".ui.activities.SelectIncomeExpenseActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
-        android:name="com.example.bankclient.fragment.CheckLongIncomeFragment"
+        android:name="com.example.bankclient.ui.fragments.CheckLongIncomeFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="12dp"

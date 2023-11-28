@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".activity.BankProductListActivity">
+    tools:context=".ui.activities.BankProductListActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
-        android:name="com.example.bankclient.fragment.BankProductExpenseFragment"
+        android:name="com.example.bankclient.ui.fragments.BankProductExpenseFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="24dp"

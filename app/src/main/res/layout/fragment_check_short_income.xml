@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#E8E8F9"
-    tools:context=".fragment.CheckShortIncomeFragment">
+    tools:context=".ui.fragments.CheckShortIncomeFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/shortIncomeList"

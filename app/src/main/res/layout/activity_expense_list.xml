@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.ExpenseActivity"
+    tools:context=".ui.activities.ExpenseActivity"
     android:background="@color/background">
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switchExpense"
@@ -22,7 +22,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
-        android:name="com.example.bankclient.fragment.LongExpenseFragment"
+        android:name="com.example.bankclient.ui.fragments.LongExpenseFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="24dp"

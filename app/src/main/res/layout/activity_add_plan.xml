@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E8E8F9"
-    tools:context=".activity.AddPlanActivity">
+    tools:context=".ui.activities.AddPlanActivity">
 
     <EditText
         android:id="@+id/editTitle"
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:hint="название"
+        android:hint="Название"
         android:textColor="@color/black"
         android:textColorHint="@color/black"
         android:layout_marginTop="12dp"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:hint="целевой баланс"
+        android:hint="Наличные"
         android:textColorHint="@color/black"
         android:textColor="@color/black"
         android:layout_marginTop="12dp"

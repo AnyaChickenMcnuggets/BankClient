@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background"
-    tools:context=".fragment.BankProductIncomeFragment">
+    tools:context=".ui.fragments.BankProductIncomeFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bankIncomeList"
