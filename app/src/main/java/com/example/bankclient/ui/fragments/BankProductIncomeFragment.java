@@ -102,7 +102,9 @@ public class BankProductIncomeFragment extends Fragment implements RecyclerViewI
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
-                        Boolean.valueOf(cursor.getString(4))));
+                        Boolean.valueOf(cursor.getString(4)),
+                        cursor.getString(5),
+                        cursor.getString(6)));
             }
 
         }

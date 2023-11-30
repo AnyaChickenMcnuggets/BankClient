@@ -22,6 +22,8 @@ import com.example.bankclient.util.solution.PlotGenerator;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 
 public class AddPlanActivity extends AppCompatActivity {
@@ -68,7 +70,8 @@ public class AddPlanActivity extends AppCompatActivity {
             DatabaseHelper db = new DatabaseHelper(AddPlanActivity.this);
             ArrayList<IncomeExpense> ies = PlotGenerator.getIEFromIds(AddPlanActivity.this, ids);
             int startSum = Integer.valueOf(editSum.getText().toString().trim());
-            LocalDate dateNow = LocalDateTime.now().toLocalDate().plusDays(1);
+            LocalDate dateNow = LocalDateTime.now().toLocalDate().with(TemporalAdjusters.firstDayOfNextMonth());
+            String plot = PlotGenerator.generatePlot(ies, addProduct, startSum, dateNow);
             db.addPlan(
                     editTitle.getText().toString().trim(),
                     dateNow.toString().trim(),
@@ -77,9 +80,9 @@ public class AddPlanActivity extends AppCompatActivity {
                     addProduct,
                     "problem",
                     "no response",
-                    PlotGenerator.generatePlot(ies, addProduct, startSum, dateNow));
+                    plot);
 
-            // PlotGenerator.createMatrix(addProduct, ies, startSum, dateNow);
+            PlotGenerator.createMatrix(plot, dateNow);
             finish();
         });
     }

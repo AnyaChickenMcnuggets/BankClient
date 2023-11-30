@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.widget.Toast;
 
 import com.example.bankclient.repository.DatabaseHelper;
+import com.example.bankclient.ui.models.BankProduct;
 import com.example.bankclient.ui.models.IncomeExpense;
 import com.example.bankclient.ui.models.UsedBankProduct;
 import com.jjoe64.graphview.series.DataPoint;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -103,51 +105,115 @@ public class PlotGenerator {
         for(int i=0; i<365;i++) {
             Date date = Date.from(LocalDate.of(Integer.parseInt(dateNow.split("-")[0]),
                     Integer.parseInt(dateNow.split("-")[1]),
-                    Integer.parseInt(dateNow.split("-")[2])).plusDays(1+i).atStartOfDay().atZone(ZoneId.of("Europe/Moscow")).toInstant());
+                    Integer.parseInt(dateNow.split("-")[2])).plusDays(i).atStartOfDay().atZone(ZoneId.of("Europe/Moscow")).toInstant());
             datePoints[i] = new DataPoint(date, Integer.parseInt(plotArr[i]));
         }
         return new LineGraphSeries<>(datePoints);
     }
-    public static int[][] createMatrix(ArrayList<UsedBankProduct> products,
-                                       ArrayList<IncomeExpense> ies,
-                                       int startSum,
+    public static Double[][] createMatrix(String plot,
                                        LocalDate dateNow){
-        int[][] matrix;
+        Double[][] matrix;
         int n,m;
 
-        String plotString = generatePlot(ies, products, startSum, dateNow);
-        n = (int) products.stream().filter(g -> g.getIncome()).count() * 12 + 24 * (int) products.stream().filter(g -> !g.getIncome()).count() + 1;
-        m =  products.stream().anyMatch(g -> !g.getIncome()) ? 13 + (int) products.stream().filter(g -> !g.getIncome()).count() * 23 : 13 ;
+        // 2 типа вклада и 2 типа кредитных линий
+        int k = 4;
+        BankProduct[] products = new BankProduct[k];
+        products[0] = new BankProduct("0", "Вклад 30 дней", "30", "13%", true, "", "");
+        products[1] = new BankProduct("1", "Вклад 180 дней", "180", "14%", true, "", "");
+        products[2] = new BankProduct("2", "Кредитная линия 25", "0", "25%", false, "35000", "7%");
+        products[3] = new BankProduct("2", "Кредитная линия 27", "0", "27%", false, "50000", "5%");
+        // TODO хардкод банковских продуктов для тестов и минимального функционала
+        BankProduct[] vs = Arrays.stream(products).filter(g -> g.getIncome()).toArray(BankProduct[]::new);
+        BankProduct[] cs = Arrays.stream(products).filter(g -> !g.getIncome()).toArray(BankProduct[]::new);
+        int v = vs.length; // вклады
+        int c = cs.length; // кредиты
+        // m = типы вкладов * 12 + типы кредитных линий * 24 + 1
+        m=v*12+c*24+1;
+        // n = 13 (ограничения по месяцам и целевая) + кол-во кредитных линий на 23 + кол-во кредитных линий на 12
+        n=13 + c*23 + 12*c;
 
-        matrix = new int[n][m];
+
+        matrix = new Double[n][m];
         for(int i =0; i<n;i++){
             for(int j =0; j<m;j++){
-                matrix[i][j] = 0;
+                matrix[i][j] = 0.0;
             }
         }
-        for (UsedBankProduct product : products) {
-            if (product.getIncome()){
-
-            }else {
-
-            }
+        String[] plotArray = plot.split("\\|");
+        // вектор B для ограничений по месяцам
+        for (int i =0; i<12;i++){
+            int days = (int) ChronoUnit.DAYS.between(dateNow, dateNow.plusMonths(i));
+            matrix[i][0] = Double.parseDouble(plotArray[days]);
         }
 
-        int incomeExpenseSum = startSum;
+        // Целевая функция
+        // для каждого месяца
+        for (int i = 1; i<=12; i++){
+            for (int j = 0; j<v; j++){
+                int s = Integer.parseInt(vs[j].getTime())/30;
+                // вклады в целевой функции ВРЕМЯ КРАТНО 30
+                if (i + s<=13){
+                    matrix[n-1][j*12+i] = -(Double.parseDouble(vs[j].getTime()) * Double.parseDouble(vs[j].getPercentage().replaceAll("%", ""))/100/365);
+                }
 
-        for (IncomeExpense incomeExpense : ies) {
-            if (incomeExpense.getLong()){
-                int value = Integer.parseInt(incomeExpense.getSum().split("\\.")[0].replaceAll(",", ""));
-                value =  incomeExpense.getIncome() ? value : -value;
-                incomeExpenseSum += value;
+                // ограничение трат по месяцам
+                matrix[i-1][j*12+i] += 1.0;
+
+                // условие что потраченные деньги вернутся в карман после истечения срока вклада
+                if (i!=1){
+                    for (int f = 1; f<i; f++){
+                        if (i-s!=f) {
+                            matrix[i-1][j*12+f] += 1.0;
+                        }
+                    }
+                }
             }
         }
+        // для каждого месяца
+        for (int i = 1; i<=12; i++){
+            int credit_index = v*12;
+            for (int j = 0; j<c; j++){
+                Double multi = (13-i) * Double.parseDouble(cs[j].getPercentage().replaceAll("%", ""))/100/365*30;
+                // кредитные линии
+                matrix[n-1][credit_index+j*12+i] = multi;
+                matrix[n-1][credit_index+12+j*12+i] = -multi;
 
-        // первые 12 по месяцам 100%
-        for (int i = 0; i < 12; i++){
-            int a = i;
-            matrix[0][i] = incomeExpenseSum * (i+1) + ies.stream().filter(g -> !g.getLong() && g.getIncome() && Integer.parseInt(g.getDate().split("\\.")[1]) == a).mapToInt(o -> Integer.valueOf(o.getSum())).sum()
-                    + ies.stream().filter(g -> !g.getLong() && !g.getIncome() && Integer.parseInt(g.getDate().split("\\.")[1]) == a).mapToInt(o -> Integer.valueOf(o.getSum())).sum();
+                // ограничение на разовое снятие: B и множитель
+                matrix[11+12*j+i][0] = Double.parseDouble(cs[j].getCreditLimit());
+                matrix[11+12*j+i][credit_index+j*12+i] = 1.0;
+
+                // ограничение на сумму задолженности
+                matrix[11 + 12*c +12*j+i][0] = Double.parseDouble(cs[j].getCreditLimit());
+                for (int f = 1; f<=i; f++){
+                    matrix[23+12*j+i][credit_index+j*12+f] = 1.0;
+                    matrix[23+12*j+i][credit_index+12+j*12+f] = -1.0;
+
+                    // ограничение трат по месяцам
+                    if (f==i){
+                        matrix[i-1][credit_index+j*12+f] -= 1.0;
+                        matrix[i-1][credit_index+12+j*12+f] += 1.0;
+                    }else {
+                        matrix[i-1][credit_index+j*12+f] += 1.0;
+                        matrix[i-1][credit_index+12+j*12+f] -= 1.0;
+                    }
+
+                }
+
+                // ограничение на минимальный платеж
+                Double minPercentagePay = Double.parseDouble(cs[j].getMinPercentagePay().replaceAll("%", ""));
+                if (i!=1){
+                    for (int f = 1; f<=i; f++){
+                        if (f!=i) {
+                            matrix[11 + 24*c + 11 * j + i-1][credit_index + j * 12 + f] = minPercentagePay;
+                            matrix[11 + 24*c + 11 * j + i-1][credit_index + 12 + j * 12 + f] = -minPercentagePay;
+                        } else{
+                            matrix[11 + 24*c + 11 * j + i-1][credit_index+12+j*12+f] = -1.0;
+                        }
+
+                    }
+                }
+                credit_index +=12;
+            }
         }
 
         return matrix;

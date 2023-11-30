@@ -47,6 +47,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String BPCOLUMN_DATE="bp_date";
     private static final String BPCOLUMN_PERCENTAGE="bp_percentage";
     private static final String BPCOLUMN_INCOME="bp_income";
+    private static final String BPCOLUMN_CREDITLIMIT="bp_limit";
+    private static final String BPCOLUMN_MINPAY="bp_minpay";
 
     private static final String UBPTABLE_NAME="used_bank_products";
     private static final String UBPCOLUMN_TITLE="ubp_title";
@@ -88,7 +90,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         BPCOLUMN_TITLE + " TEXT, " +
                         BPCOLUMN_DATE + " TEXT, " +
                         BPCOLUMN_PERCENTAGE + " TEXT, " +
-                        BPCOLUMN_INCOME + " TEXT);";
+                        BPCOLUMN_INCOME + " TEXT, " +
+                        BPCOLUMN_CREDITLIMIT + " TEXT, " +
+                        BPCOLUMN_MINPAY + " TEXT);";
         db.execSQL(query);
         query=
                 "CREATE TABLE " + UBPTABLE_NAME+
@@ -133,6 +137,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(BPCOLUMN_DATE, date);
         cv.put(BPCOLUMN_PERCENTAGE, percentage);
         cv.put(BPCOLUMN_INCOME, income);
+        cv.put(BPCOLUMN_CREDITLIMIT, income);
+        cv.put(BPCOLUMN_MINPAY, income);
         long result = db.insert(BPTABLE_NAME, null, cv);
         if (result==-1){
             Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
