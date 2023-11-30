@@ -20,7 +20,7 @@ import com.example.bankclient.ui.recycler_view.CheckIEAdapter;
 import com.example.bankclient.repository.DatabaseHelper;
 import com.example.bankclient.util.interface_helper.ItemClickListener;
 import com.example.bankclient.ui.models.IncomeExpense;
-import com.example.bankclient.ui.viewmodel.CheckIEViewModel;
+import com.example.bankclient.ui.data_transfer.CheckIEViewModel;
 
 import java.util.ArrayList;
 

@@ -74,6 +74,8 @@ dependencies {
     // Dependency for circular image
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
+    // PLOT GRAPHICS
+    implementation("com.jjoe64:graphview:4.2.2")
 
     implementation("com.intuit.sdp:sdp-android:1.0.6")
     implementation("com.intuit.ssp:ssp-android:1.0.6")

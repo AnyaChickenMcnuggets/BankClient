@@ -1,15 +1,34 @@
 package com.example.bankclient.ui.models;
 
 public class Plan {
-    String id, title, date, status, response;
+    String id, title, date, status, response, plot, sum;
 
-    public Plan(String id, String title, String date, String status, String response) {
+    public Plan(String id, String title, String date, String sum, String status, String response, String plot) {
         this.id = id;
         this.title = title;
         this.date = date;
+        this.sum = sum;
         this.status = status;
         this.response = response;
+        this.plot = plot;
     }
+
+    public String getSum() {
+        return sum;
+    }
+
+    public void setSum(String sum) {
+        this.sum = sum;
+    }
+
+    public String getPlot() {
+        return plot;
+    }
+
+    public void setPlot(String plot) {
+        this.plot = plot;
+    }
+
     public String getId() {
         return id;
     }

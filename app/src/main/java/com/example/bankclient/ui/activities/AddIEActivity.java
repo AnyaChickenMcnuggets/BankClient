@@ -94,7 +94,7 @@ public class AddIEActivity extends AppCompatActivity {
                 db.addIE(
                         titleText.getText().toString().trim(),
                         formatNumberCurrency(sumText.getText().toString()),
-                        dateText.getDayOfMonth() + "." + dateText.getMonth()+"." + dateText.getYear(),
+                        dateText.getDayOfMonth() + "." + (dateText.getMonth() + 1) +"." + dateText.getYear(),
                         checkLong.isChecked() ? "true" : "false",
                         switchIE.isChecked() ? "false" : "true",
                         period);

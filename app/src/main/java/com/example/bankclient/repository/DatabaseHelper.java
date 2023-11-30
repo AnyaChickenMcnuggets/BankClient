@@ -24,6 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_TITLE="plan_title";
     private static final String COLUMN_DATE="plan_date";
     private static final String COLUMN_RESPONSE="plan_response";
+    private static final String COLUMN_STARTPLOT="plan_plot";
 
     private static final String PIETABLE_NAME="plans_incomes_expenses";
     private static final String PIECOLUMN_PLAN="plan_id";
@@ -68,7 +69,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         COLUMN_DATE + " TEXT, " +
                         COLUMN_SUM + " TEXT, " +
                         COLUMN_STATUS + " TEXT, " +
-                        COLUMN_RESPONSE + " TEXT);";
+                        COLUMN_RESPONSE + " TEXT, " +
+                        COLUMN_STARTPLOT + " TEXT);";
         db.execSQL(query);
         query=
                 "CREATE TABLE " + IETABLE_NAME+
@@ -139,7 +141,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addPlan(String title, String date, String sum, String[] id_ies, ArrayList<UsedBankProduct> ubps, String status, String response){
+    public void addPlan(String title,
+                        String date,
+                        String sum,
+                        String[] id_ies,
+                        ArrayList<UsedBankProduct> ubps,
+                        String status,
+                        String response,
+                        String plot){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues plan_cv = new ContentValues();
@@ -149,6 +158,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         plan_cv.put(COLUMN_SUM, sum);
         plan_cv.put(COLUMN_STATUS, status);
         plan_cv.put(COLUMN_RESPONSE, response);
+        plan_cv.put(COLUMN_STARTPLOT, plot);
         long plan_cv_id = db.insert(TABLE_NAME, null, plan_cv);
         if (plan_cv_id==-1){
             Toast.makeText(context, "Ошибка ПЛАН", Toast.LENGTH_SHORT).show();
@@ -163,7 +173,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ubpcv.put(UBPCOLUMN_TITLE, ubp.getTitle());
             ubpcv.put(UBPCOLUMN_DATE, ubp.getTime());
             ubpcv.put(UBPCOLUMN_PERCENTAGE, ubp.getPercentage());
-            ubpcv.put(UBPCOLUMN_INCOME, ubp.getIncome());
+            ubpcv.put(UBPCOLUMN_INCOME, ubp.getIncome() ? "true" : "false");
             ubpcv.put(UBPCOLUMN_SUM, ubp.getSum());
             ubpcv.put(UBPCOLUMN_START, ubp.getStartDate());
             long ubp_id = db.insert(UBPTABLE_NAME, null, ubpcv);
@@ -202,6 +212,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public Cursor getPlanById(String id){
+        String query = "SELECT * FROM " + TABLE_NAME +
+                " WHERE " + COLUMN_ID + " = '" + id+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if (db!=null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
     public void addIE(String title, String sum, String date, String isLong, String isIncome, String period){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();

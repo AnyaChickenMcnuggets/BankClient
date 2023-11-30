@@ -85,7 +85,7 @@ public class EditIEActivity extends AppCompatActivity {
         titleText.setText(title);
         sumText.setText(sum);
         String[] aaa = date.split("\\.");
-        dateText.updateDate(Integer.parseInt(aaa[2]), Integer.parseInt(aaa[1]), Integer.parseInt(aaa[0]));
+        dateText.updateDate(Integer.parseInt(aaa[2]), Integer.parseInt(aaa[1])-1, Integer.parseInt(aaa[0]));
 
         save.setOnClickListener(view -> {
             if (titleText.getText().toString().equals("") ||
@@ -98,7 +98,7 @@ public class EditIEActivity extends AppCompatActivity {
                         id,
                         titleText.getText().toString().trim(),
                         formatNumberCurrency(sumText.getText().toString()),
-                        dateText.getDayOfMonth() + "." + dateText.getMonth()+"." + dateText.getYear(),
+                        dateText.getDayOfMonth() + "." + (dateText.getMonth() +1)+"." + dateText.getYear(),
                         checkLong.isChecked() ? "true" : "false",
                         switchIE.isChecked() ? "false" : "true",
                         period);

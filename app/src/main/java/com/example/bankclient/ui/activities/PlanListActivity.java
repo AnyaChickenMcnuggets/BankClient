@@ -81,7 +81,9 @@ public class PlanListActivity extends AppCompatActivity implements RecyclerViewI
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
-                        cursor.getString(4)));
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6)));
             }
 
         }
@@ -104,7 +106,11 @@ public class PlanListActivity extends AppCompatActivity implements RecyclerViewI
 
         editLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Изменить", Toast.LENGTH_SHORT).show());
 
-        peekLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Посмотреть", Toast.LENGTH_SHORT).show());
+        peekLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(PlanListActivity.this, WatchSolutionActivity.class);
+            intent.putExtra("plan_id", plan.getId());
+            startActivity(intent);
+        });
 
         deleteLayout.setOnClickListener(v -> {
             DatabaseHelper db = new DatabaseHelper(dialog.getContext());

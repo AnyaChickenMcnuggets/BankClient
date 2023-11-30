@@ -1,4 +1,4 @@
-package com.example.bankclient.ui.viewmodel;
+package com.example.bankclient.ui.data_transfer;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

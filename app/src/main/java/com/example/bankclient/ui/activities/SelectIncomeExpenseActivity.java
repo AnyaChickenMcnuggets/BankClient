@@ -18,7 +18,7 @@ import com.example.bankclient.ui.fragments.CheckLongIncomeFragment;
 import com.example.bankclient.ui.fragments.CheckShortExpenseFragment;
 import com.example.bankclient.ui.fragments.CheckShortIncomeFragment;
 import com.example.bankclient.ui.models.IncomeExpense;
-import com.example.bankclient.ui.viewmodel.CheckIEViewModel;
+import com.example.bankclient.ui.data_transfer.CheckIEViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bankclient.R;
 import com.example.bankclient.util.interface_helper.ItemClickListener;
 import com.example.bankclient.ui.models.IncomeExpense;
-import com.example.bankclient.ui.viewmodel.CheckIEViewModel;
+import com.example.bankclient.ui.data_transfer.CheckIEViewModel;
 
 import java.util.ArrayList;
 
