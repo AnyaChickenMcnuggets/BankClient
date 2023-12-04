@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.example.bankclient.ui.models.Plan;
 import com.example.bankclient.ui.models.UsedBankProduct;
 
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DATE="plan_date";
     private static final String COLUMN_RESPONSE="plan_response";
     private static final String COLUMN_STARTPLOT="plan_plot";
+    private static final String COLUMN_SOLUTION="plan_solution";
+
 
     private static final String PIETABLE_NAME="plans_incomes_expenses";
     private static final String PIECOLUMN_PLAN="plan_id";
@@ -72,7 +75,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         COLUMN_SUM + " TEXT, " +
                         COLUMN_STATUS + " TEXT, " +
                         COLUMN_RESPONSE + " TEXT, " +
-                        COLUMN_STARTPLOT + " TEXT);";
+                        COLUMN_STARTPLOT + " TEXT, " +
+                        COLUMN_SOLUTION + " TEXT);";
         db.execSQL(query);
         query=
                 "CREATE TABLE " + IETABLE_NAME+
@@ -142,12 +146,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(BPTABLE_NAME, null, cv);
         if (result==-1){
             Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(context, "Успех", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void addPlan(String title,
+    public long addPlan(String title,
                         String date,
                         String sum,
                         String[] id_ies,
@@ -165,12 +167,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         plan_cv.put(COLUMN_STATUS, status);
         plan_cv.put(COLUMN_RESPONSE, response);
         plan_cv.put(COLUMN_STARTPLOT, plot);
+        plan_cv.put(COLUMN_SOLUTION, "");
         long plan_cv_id = db.insert(TABLE_NAME, null, plan_cv);
         if (plan_cv_id==-1){
             Toast.makeText(context, "Ошибка ПЛАН", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(context, "Успех ПЛАН", Toast.LENGTH_SHORT).show();
         }
+
         // добавить все используемые банковские продукты
         for (UsedBankProduct ubp:
                 ubps) {
@@ -185,8 +187,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             long ubp_id = db.insert(UBPTABLE_NAME, null, ubpcv);
             if (ubp_id==-1){
                 Toast.makeText(context, "Ошибка ПРОДУКТ", Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(context, "Успех ПРОДУКТ", Toast.LENGTH_SHORT).show();
             }
 
             ContentValues pubpcv = new ContentValues();
@@ -196,8 +196,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             long pubp_id = db.insert(PUBPTABLE_NAME, null, pubpcv);
             if (pubp_id==-1){
                 Toast.makeText(context, "Ошибка ПРОДУКТ ПЛАН", Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(context, "Успех ПРОДУКТ ПЛАН", Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -211,11 +209,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             long pubp_id = db.insert(PIETABLE_NAME, null, piecv);
             if (pubp_id==-1){
                 Toast.makeText(context, "Ошибка ИЕ ПЛАН", Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(context, "Успех ИЕ ПЛАН", Toast.LENGTH_SHORT).show();
             }
         }
-
+        return plan_cv_id;
     }
 
     public Cursor getPlanById(String id){
@@ -381,8 +377,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.delete(TABLE_NAME, COLUMN_ID + " = ? ", new String[]{plan_id});
         if (result==-1){
             Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(context, "Успех", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -391,17 +385,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.delete(IETABLE_NAME, COLUMN_ID + " = ? ", new String[]{ie_id});
         if (result==-1){
             Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(context, "Успех", Toast.LENGTH_SHORT).show();
-        }
-    }
-    public void editIE(String ie_id){
-        SQLiteDatabase db = this.getWritableDatabase();
-        long result = db.delete(IETABLE_NAME, COLUMN_ID + " = ? ", new String[]{ie_id});
-        if (result==-1){
-            Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(context, "Успех", Toast.LENGTH_SHORT).show();
         }
     }
     public void editIE(String ie_id, String title, String sum, String date, String isLong, String isIncome, String period){
@@ -418,8 +401,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.update(IETABLE_NAME, cv, "_id=?", new String[]{ie_id});
         if (result==-1){
             Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(context, "Успех", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void addSolutionById(Plan plan, String plot, String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_TITLE, plan.getTitle());
+        cv.put(COLUMN_DATE, plan.getDate());
+        cv.put(COLUMN_SUM, plan.getSum());
+        cv.put(COLUMN_STATUS, plan.getStatus());
+        cv.put(COLUMN_RESPONSE, plan.getResponse());
+        cv.put(COLUMN_STARTPLOT, plan.getPlot());
+        cv.put(COLUMN_SOLUTION, plot);
+
+        long result = db.update(TABLE_NAME, cv, "_id=?", new String[]{id});
+        if (result==-1){
+            Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

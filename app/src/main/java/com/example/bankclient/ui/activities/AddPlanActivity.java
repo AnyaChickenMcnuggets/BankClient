@@ -9,16 +9,26 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.bankclient.R;
+import com.example.bankclient.api.API;
+import com.example.bankclient.api.RetrofitService;
+import com.example.bankclient.api.SocketConnection;
 import com.example.bankclient.repository.DatabaseHelper;
 import com.example.bankclient.ui.models.IncomeExpense;
+import com.example.bankclient.ui.models.Plan;
+import com.example.bankclient.ui.models.PostData;
 import com.example.bankclient.ui.models.UsedBankProduct;
 import com.example.bankclient.util.solution.PlotGenerator;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,8 +36,17 @@ import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 
-public class AddPlanActivity extends AppCompatActivity {
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
+public class AddPlanActivity extends AppCompatActivity {
+    Plan plan;
+    API api;
     ImageButton addIE, addMyBank;
     String[] ids;
     Button addButton;
@@ -72,7 +91,7 @@ public class AddPlanActivity extends AppCompatActivity {
             int startSum = Integer.valueOf(editSum.getText().toString().trim());
             LocalDate dateNow = LocalDateTime.now().toLocalDate().with(TemporalAdjusters.firstDayOfNextMonth());
             String plot = PlotGenerator.generatePlot(ies, addProduct, startSum, dateNow);
-            db.addPlan(
+            long plan_id = db.addPlan(
                     editTitle.getText().toString().trim(),
                     dateNow.toString().trim(),
                     editSum.getText().toString().trim(),
@@ -82,7 +101,58 @@ public class AddPlanActivity extends AppCompatActivity {
                     "no response",
                     plot);
 
-            PlotGenerator.createMatrix(plot, dateNow);
+            Double[][] matrix = PlotGenerator.createMatrix(plot, dateNow);
+            String matrixStr = PlotGenerator.generateStringFromMatrix(matrix);
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://192.168.1.5:5050")
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            api = retrofit.create(API.class);
+            Call<String> call = api.addMatrix(new PostData(matrixStr,String.valueOf(matrix.length), String.valueOf(matrix[0].length)));
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (!response.isSuccessful()){
+                        Toast.makeText(AddPlanActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                    String stringResponse = "";
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body());
+                        stringResponse = jsonObject.get("text").toString();
+                        String solution = PlotGenerator.updatePlot(stringResponse, plot, dateNow);
+
+                        Cursor cursor = db.getPlanById(String.valueOf(plan_id));
+                        if (cursor.getCount()==0){
+                            Toast.makeText(AddPlanActivity.this, "No Data", Toast.LENGTH_SHORT).show();
+                        }else {
+                            while (cursor.moveToNext()){
+                                plan = new Plan(
+                                        cursor.getString(0),
+                                        cursor.getString(1),
+                                        cursor.getString(2),
+                                        cursor.getString(3),
+                                        cursor.getString(4),
+                                        cursor.getString(5),
+                                        cursor.getString(6),
+                                        cursor.getString(7));
+                            }
+                        }
+                        db.addSolutionById(plan, solution, String.valueOf(plan_id));
+                    }catch (JSONException err){
+                        Toast.makeText(AddPlanActivity.this, "JSONError", Toast.LENGTH_SHORT).show();
+                    }
+                    Toast.makeText(AddPlanActivity.this, "результат уже получен", Toast.LENGTH_SHORT).show();
+
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Toast.makeText(AddPlanActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
             finish();
         });
     }

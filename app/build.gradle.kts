@@ -70,6 +70,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.1.0")
 
     // Dependency for circular image
     implementation("de.hdodenhof:circleimageview:3.1.0")

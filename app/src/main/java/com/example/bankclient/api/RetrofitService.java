@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitService {
     private Retrofit retrofit;
-    private final String url = "http://192.168.43.1:8080";
+    private final String url = "http://127.0.0.1:5049";
     public RetrofitService() {
         InitializeRetrofit();
     }
@@ -18,4 +18,5 @@ public class RetrofitService {
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build();
     }
+
 }

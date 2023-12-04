@@ -19,18 +19,34 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bankclient.R;
+import com.example.bankclient.api.API;
+import com.example.bankclient.ui.models.PostData;
 import com.example.bankclient.ui.recycler_view.PlanAdapter;
 import com.example.bankclient.repository.DatabaseHelper;
 import com.example.bankclient.util.interface_helper.RecyclerViewInterface;
 import com.example.bankclient.ui.models.Plan;
+import com.example.bankclient.util.solution.PlotGenerator;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class PlanListActivity extends AppCompatActivity implements RecyclerViewInterface {
     RecyclerView recyclerView;
     TextView addPlan;
     TextView planCount, notUpdatedPlanCount;
-
+    API api;
     DatabaseHelper db;
     ArrayList<Plan> planArrayList;
     @Override
@@ -83,7 +99,8 @@ public class PlanListActivity extends AppCompatActivity implements RecyclerViewI
                         cursor.getString(3),
                         cursor.getString(4),
                         cursor.getString(5),
-                        cursor.getString(6)));
+                        cursor.getString(6),
+                        cursor.getString(7)));
             }
 
         }
@@ -119,7 +136,43 @@ public class PlanListActivity extends AppCompatActivity implements RecyclerViewI
             onRestart();
         });
 
-        updateLayout.setOnClickListener(v -> Toast.makeText(dialog.getContext(), "Обновить", Toast.LENGTH_SHORT).show());
+        updateLayout.setOnClickListener(v -> {
+            LocalDate dateNow = LocalDateTime.now().toLocalDate().with(TemporalAdjusters.firstDayOfNextMonth());
+            Double[][] matrix = PlotGenerator.createMatrix(plan.getPlot(), dateNow);
+            String matrixStr = PlotGenerator.generateStringFromMatrix(matrix);
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://192.168.1.5:5050")
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            api = retrofit.create(API.class);
+            Call<String> call = api.addMatrix(new PostData(matrixStr,String.valueOf(matrix.length), String.valueOf(matrix[0].length)));
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (!response.isSuccessful()){
+                        Toast.makeText(PlanListActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                    String stringResponse = "";
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body());
+                        stringResponse = jsonObject.get("text").toString();
+                        String solution = PlotGenerator.updatePlot(stringResponse, plan.getPlot(), dateNow);
+                        db.addSolutionById(plan, solution, String.valueOf(plan.getId()));
+                    }catch (JSONException err){
+                        Toast.makeText(PlanListActivity.this, "JSONError", Toast.LENGTH_SHORT).show();
+                    }
+                    Toast.makeText(PlanListActivity.this, "Обновлено", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Toast.makeText(PlanListActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
 
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
