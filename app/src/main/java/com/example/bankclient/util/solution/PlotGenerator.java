@@ -66,11 +66,19 @@ public class PlotGenerator {
                 plotFDOM[days] = Double.valueOf(plotA[days]);
             else plotFDOM[days] = Double.parseDouble(plotA[days]) - Double.parseDouble(plotA[lastDay]);
         }
+        int fullCredit = 0;
+
+        for (int i=0; i<12;i++){
+            fullCredit+= Integer.parseInt(String.valueOf(Double.valueOf(solA[i+24])
+                    -Double.valueOf(solA[i+36])).split("\\.")[0]);
+        }
 
         Double percentageSum = 0.0;
+        int tempFull = 0;
         for (int i = 0; i<12; i++){
             int month = dateNow.getMonthValue() +i;
             int year = dateNow.getYear();
+
 
             if (month>12){
                 month-=12;
@@ -79,50 +87,69 @@ public class PlotGenerator {
             LocalDate dateNext = LocalDate.of(year, month,1);
             int daysStart = (int) ChronoUnit.DAYS.between(dateNow, dateNext);
             if (daysStart==365) daysStart-=1;
-            int daysEnd = (int) ChronoUnit.DAYS.between(dateNow, dateNext.withDayOfMonth(dateNext.lengthOfMonth()));
             if (daysStart<365 && daysStart>=0)
             if (i==0){
-                temp[daysStart] += Integer.parseInt(String.valueOf(-Double.valueOf(solA[i])
+                 tempFull+= Integer.parseInt(String.valueOf(-Double.valueOf(solA[i])
                         -Double.valueOf(solA[i+12])
                         +Double.valueOf(solA[i+24])
                         -Double.valueOf(solA[i+36])).split("\\.")[0]);
+                temp[daysStart] += tempFull;
             }
             if (i>0 && i<6){
-                percentageSum += Double.valueOf(solA[i-1]) * Integer.parseInt(products[0].getTime())
-                        * Double.parseDouble(products[0].getPercentage().replaceAll("%", ""))/100/365;
-                temp[daysStart] += Integer.parseInt(String.valueOf(-Double.valueOf(solA[i])
+                tempFull += Integer.parseInt(String.valueOf(Double.valueOf(solA[i-1]) * Integer.parseInt(products[0].getTime())
+                        * Double.parseDouble(products[0].getPercentage().replaceAll("%", ""))/100/365).split("\\.")[0]);
+
+                tempFull += Integer.parseInt(String.valueOf(-Double.valueOf(solA[i])
                         -Double.valueOf(solA[i+12])
                         +Double.valueOf(solA[i+24])
                         -Double.valueOf(solA[i+36])
                         +Double.valueOf(solA[i-1])
                         + percentageSum).split("\\.")[0]);
+                temp[daysStart] += tempFull;
             }
             if (i>=6 && i<12){
-                percentageSum += Double.valueOf(solA[i-1]) * Integer.parseInt(products[0].getTime())
-                        * Double.parseDouble(products[0].getPercentage().replaceAll("%", ""))/100/365;
-                percentageSum += Double.valueOf(solA[i+12-6]) * Integer.parseInt(products[1].getTime())
-                        * Double.parseDouble(products[1].getPercentage().replaceAll("%", ""))/100/365;
-                temp[daysStart] += Integer.parseInt(String.valueOf(-Double.valueOf(solA[i])
+                tempFull += Integer.parseInt(String.valueOf(Double.valueOf(solA[i-1]) * Integer.parseInt(products[0].getTime())
+                        * Double.parseDouble(products[0].getPercentage().replaceAll("%", ""))/100/365).split("\\.")[0]);
+                tempFull += Integer.parseInt(String.valueOf(Double.valueOf(solA[i+12-6]) * Integer.parseInt(products[1].getTime())
+                        * Double.parseDouble(products[1].getPercentage().replaceAll("%", ""))/100/365).split("\\.")[0]);
+                tempFull += Integer.parseInt(String.valueOf(-Double.valueOf(solA[i])
                         -Double.valueOf(solA[i+12])
                         +Double.valueOf(solA[i+24])
                         -Double.valueOf(solA[i+36])
                         +Double.parseDouble(solA[i-1])
                         +Double.parseDouble(solA[i+12-6])
                         + percentageSum).split("\\.")[0]);
+                temp[daysStart] += tempFull;
+            }
+            if (i==11){
+                tempFull += Integer.parseInt(String.valueOf(Double.valueOf(solA[i]) * Integer.parseInt(products[0].getTime())
+                        * Double.parseDouble(products[0].getPercentage().replaceAll("%", ""))/100/365).split("\\.")[0]);
+                tempFull += Integer.parseInt(String.valueOf(Double.valueOf(solA[i+12-5]) * Integer.parseInt(products[1].getTime())
+                        * Double.parseDouble(products[1].getPercentage().replaceAll("%", ""))/100/365).split("\\.")[0]);
+                tempFull += Integer.parseInt(String.valueOf(-fullCredit
+                        +Double.parseDouble(solA[i])
+                        +Double.parseDouble(solA[i+12-5])
+                        + percentageSum).split("\\.")[0]);
+                temp[364] += tempFull;
             }
         }
 
-
-        for(int i=0; i<365;i++){
-            if (temp[i]!=0)
-                plotFDOM[i] = plotFDOM[i] - Double.parseDouble(String.valueOf(temp[i]));
-        }
+        int[] is = new int[365];
+//        for(int i=0; i<365;i++){
+//            if (temp[i]!=0) {
+//                is[i] = 1;
+//                plotFDOM[i] = plotFDOM[i] - Double.parseDouble(String.valueOf(temp[i]));
+//            }
+//        }
 
         StringBuilder writeToDB = new StringBuilder();
         int a = 0;
         for(int i=0; i<365;i++){
-            a = Integer.parseInt(String.valueOf(plotFDOM[i]).split("\\.")[0]) + a;
-            writeToDB.append(a);
+            if (a!=temp[i] && temp[i]!=0)
+                a = temp[i];
+
+//            a = Integer.parseInt(String.valueOf(plotFDOM[i]).split("\\.")[0]) + a;
+            writeToDB.append(Integer.parseInt(plotA[i])+a);
             writeToDB.append("|");
         }
         return writeToDB.toString();
@@ -213,10 +240,10 @@ public class PlotGenerator {
         DataPoint[] datePoints = new DataPoint[365];
         String[] plotArr = plot.split("\\|");
         for(int i=0; i<365;i++) {
-            Date date = Date.from(LocalDate.of(Integer.parseInt(dateNow.split("-")[0]),
-                    Integer.parseInt(dateNow.split("-")[1]),
-                    Integer.parseInt(dateNow.split("-")[2])).plusDays(i).atStartOfDay().atZone(ZoneId.of("Europe/Moscow")).toInstant());
-            datePoints[i] = new DataPoint(date, Double.parseDouble(plotArr[i]));
+//            Date date = Date.from(LocalDate.of(Integer.parseInt(dateNow.split("-")[0]),
+//                    Integer.parseInt(dateNow.split("-")[1]),
+//                    Integer.parseInt(dateNow.split("-")[2])).plusDays(i).atStartOfDay().atZone(ZoneId.of("Europe/Moscow")).toInstant());
+            datePoints[i] = new DataPoint(i, Double.parseDouble(plotArr[i]));
         }
         return new LineGraphSeries<>(datePoints);
     }
@@ -260,16 +287,16 @@ public class PlotGenerator {
         }
         int credit_index = v*12;
         // вектор B для ограничений по месяцам
-//        for (int i =0; i<12;i++){
-//            int days = (int) ChronoUnit.DAYS.between(dateNow, dateNow.plusMonths(i));
-//            matrix[i][0] = Double.parseDouble(plotArray[days]);
+        for (int i =0; i<12;i++){
+            int days = (int) ChronoUnit.DAYS.between(dateNow, dateNow.plusMonths(i));
+            matrix[i][0] = Double.parseDouble(plotArray[days]);
 //            if(Double.parseDouble(plotArray[days])<0){
 //                for(int j=0; j<c;j++ ){
 //                    matrix[n-13-k][credit_index+j*12+i+1] +=1.0;
 //                    k--;
 //                }
 //            }
-//        }
+        }
 
         // Целевая функция
         // для каждого месяца

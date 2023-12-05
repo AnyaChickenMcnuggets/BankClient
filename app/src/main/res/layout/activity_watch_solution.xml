@@ -4,9 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.WatchSolutionActivity">
+    android:background="@color/main_background"
+    tools:context=".ui.activities.WatchSolutionActivity"
+    android:orientation="vertical">
     <com.jjoe64.graphview.GraphView
+        android:background="@color/main_to_button"
         android:layout_width="match_parent"
         android:layout_height="200dip"
         android:id="@+id/graph" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>

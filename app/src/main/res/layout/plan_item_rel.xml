@@ -4,7 +4,7 @@
     android:id="@+id/item_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/background">
+    android:background="@color/main_background">
     <RelativeLayout
         android:layout_marginVertical="5dp"
         android:layout_marginHorizontal="5dp"
@@ -75,7 +75,7 @@
                 android:text="Название"
                 android:layout_gravity="bottom"
                 android:paddingBottom="5dp"
-                android:textColor="@color/dark_blue"
+                android:textColor="@color/white"
                 android:textSize="40sp"
                 android:layout_weight="1"/>
 
@@ -86,7 +86,7 @@
                 android:layout_weight="1"
                 android:text="дата"
                 android:textSize="15sp"
-                android:textColor="@color/secondary_text"/>
+                android:textColor="@color/white"/>
         </LinearLayout>
 
     </RelativeLayout>

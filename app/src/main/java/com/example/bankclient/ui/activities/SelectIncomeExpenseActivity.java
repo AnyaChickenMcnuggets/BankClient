@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.Button;
@@ -89,6 +90,7 @@ public class SelectIncomeExpenseActivity extends AppCompatActivity {
             setResult(RESULT_OK, intent);
             finish();
         });
+        getLongIncome.setBackgroundResource(R.drawable.selected_button);
 
         getShortExpense.setOnClickListener(view -> {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -97,6 +99,10 @@ public class SelectIncomeExpenseActivity extends AppCompatActivity {
                     .setReorderingAllowed(true)
                     .addToBackStack("name1")
                     .commit();
+            getShortExpense.setBackgroundResource(R.drawable.selected_button);
+            getLongExpense.setBackgroundResource(R.drawable.half_circle_button_bg);
+            getShortIncome.setBackgroundResource(R.drawable.half_circle_button_bg);
+            getLongIncome.setBackgroundResource(R.drawable.half_circle_button_bg);
         });
         getLongExpense.setOnClickListener(view -> {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -105,6 +111,11 @@ public class SelectIncomeExpenseActivity extends AppCompatActivity {
                     .setReorderingAllowed(true)
                     .addToBackStack("name1")
                     .commit();
+            getLongExpense.setBackgroundResource(R.drawable.selected_button);
+            getShortExpense.setBackgroundResource(R.drawable.half_circle_button_bg);
+            getShortIncome.setBackgroundResource(R.drawable.half_circle_button_bg);
+            getLongIncome.setBackgroundResource(R.drawable.half_circle_button_bg);
+
         });
         getShortIncome.setOnClickListener(view -> {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -113,6 +124,11 @@ public class SelectIncomeExpenseActivity extends AppCompatActivity {
                     .setReorderingAllowed(true)
                     .addToBackStack("name1")
                     .commit();
+            getShortIncome.setBackgroundResource(R.drawable.selected_button);
+            getShortExpense.setBackgroundResource(R.drawable.half_circle_button_bg);
+            getLongExpense.setBackgroundResource(R.drawable.half_circle_button_bg);
+            getLongIncome.setBackgroundResource(R.drawable.half_circle_button_bg);
+
         });
         getLongIncome.setOnClickListener(view -> {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -121,6 +137,10 @@ public class SelectIncomeExpenseActivity extends AppCompatActivity {
                     .setReorderingAllowed(true)
                     .addToBackStack("name1")
                     .commit();
+            getLongIncome.setBackgroundResource(R.drawable.selected_button);
+            getShortExpense.setBackgroundResource(R.drawable.half_circle_button_bg);
+            getLongExpense.setBackgroundResource(R.drawable.half_circle_button_bg);
+            getShortIncome.setBackgroundResource(R.drawable.half_circle_button_bg);
         });
     }
 

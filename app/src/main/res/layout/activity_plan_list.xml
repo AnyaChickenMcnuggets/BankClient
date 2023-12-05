@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/main_background">
 
     <View
         android:id="@+id/viewHeaderBackground"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_125sdp"
-        android:background="@color/purple"
+        android:background="@color/button"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -26,22 +26,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="@dimen/_26sdp"
-        android:layout_height="@dimen/_26sdp"
-        android:src="@drawable/ic_search"
-        android:layout_marginEnd="@dimen/_16sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/textTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textTitle"
-        android:tint="@color/white"/>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_16sdp"
-        app:cardBackgroundColor="@color/grey"
+        app:cardBackgroundColor="@color/main_to_button"
         app:cardCornerRadius="@dimen/_16sdp"
         app:layout_constraintBottom_toBottomOf="@+id/viewHeaderBackground"
         app:layout_constraintTop_toBottomOf="@+id/viewHeaderBackground">
@@ -56,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Статистика"
-                android:textColor="@color/dark_blue"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -67,8 +58,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+"
-                android:textColor="@color/black"
+                android:paddingHorizontal="9dp"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_20ssp"
+                android:textStyle="bold"
+                android:background="@drawable/half_circle_button_bg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -84,6 +78,7 @@
                 app:layout_constraintTop_toBottomOf="@id/textViews">
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="@dimen/_28sdp"
+                    android:tint="@color/white"
                     android:layout_height="@dimen/_28sdp"
                     android:src="@drawable/ic_info"/>
 
@@ -92,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
                     android:text="Всего"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/_10ssp"/>
 
                 <TextView
@@ -100,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="24"
-                    android:textColor="@color/dark_blue"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/_16ssp"/>
             </LinearLayout>
 
@@ -115,6 +110,8 @@
                 app:layout_constraintStart_toEndOf="@id/layoutPlans"
                 app:layout_constraintTop_toBottomOf="@id/textViews">
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:tint="@color/white"
+
                     android:layout_width="@dimen/_28sdp"
                     android:layout_height="@dimen/_28sdp"
                     android:src="@drawable/ic_timer"/>
@@ -124,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
                     android:text="Ожидают"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/_10ssp"/>
 
                 <TextView
@@ -132,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3"
-                    android:textColor="@color/dark_blue"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/_16ssp"/>
             </LinearLayout>
 
@@ -147,6 +144,7 @@
                 app:layout_constraintStart_toEndOf="@id/layoutWaiting"
                 app:layout_constraintTop_toBottomOf="@id/textViews">
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:tint="@color/white"
                     android:layout_width="@dimen/_28sdp"
                     android:layout_height="@dimen/_28sdp"
                     android:src="@drawable/ic_products"/>
@@ -156,14 +154,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
                     android:text="Продукты"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/_10ssp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="7"
-                    android:textColor="@color/dark_blue"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/_16ssp"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

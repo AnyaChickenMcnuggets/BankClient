@@ -62,12 +62,14 @@ public class WatchSolutionActivity extends AppCompatActivity {
         }
 
 
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisWatcher(WatchSolutionActivity.this));
-        graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
-        graph.getGridLabelRenderer().setHumanRounding(false);
-        graph.getViewport().setMinY(-100000.00);
-        graph.getViewport().setMaxY(100000.00);
+//        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisWatcher(WatchSolutionActivity.this));
+//        graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+//        graph.getGridLabelRenderer().setHumanRounding(false);
+        graph.getViewport().setMaxX(367);
+        graph.getViewport().setMinY(0.00);
+        graph.getViewport().setMaxY(35000.00);
         graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setXAxisBoundsManual(true);
 
 
     }

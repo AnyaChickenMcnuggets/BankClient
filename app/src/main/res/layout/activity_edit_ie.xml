@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_background"
     tools:context=".ui.activities.AddIEActivity">
 
     <EditText
@@ -13,7 +14,9 @@
         android:ems="10"
         android:layout_margin="24dp"
         android:inputType="text"
-        android:hint="название"
+        android:hint="Название"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,9 +26,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
-        android:text="Доход"
-        android:textOn="Расход"
-        android:textOff="Доход"
+        android:text="Доход  "
+        android:textOn="Расход  "
+        android:textOff="Доход  "
+        android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTitle" />
@@ -36,7 +41,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginVertical="24dp"
+        android:buttonTint="@color/black"
         android:text="регулярный"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/isExpense" />
 
@@ -47,6 +54,8 @@
         android:layout_marginHorizontal="24dp"
         android:layout_height="wrap_content"
         android:hint="Частота"
+        android:textColorHint="@color/white"
+        android:background="@drawable/half_circle_button_bg"
         app:layout_constraintBottom_toBottomOf="@+id/isLong"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/isLong"
@@ -54,9 +63,14 @@
 
         <AutoCompleteTextView
             android:id="@+id/autoComplete"
+            android:textColorHint="@color/white"
+            android:background="@drawable/half_circle_button_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textColorHighlight="@color/white"
+            android:textColor="@color/white"
+            android:textColorLink="@color/white"
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,11 +79,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:calendarViewShown="false"
+        android:background="@drawable/main_to_button_bg"
         android:datePickerMode="spinner"
         app:layout_constraintBottom_toTopOf="@+id/editSum"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hint" />
+
 
     <EditText
         android:id="@+id/editSum"
@@ -78,17 +94,23 @@
         android:layout_margin="24dp"
         android:ems="10"
         android:inputType="number"
-        android:hint="сумма"
+        android:hint="Сумма"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/simpleDatePicker" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Сохранить \nизменения"
+        android:text="Добавить"
+        android:textColor="@color/white"
+        android:padding="10dp"
         android:layout_margin="12dp"
+        android:background="@drawable/half_circle_button_bg"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editSum" />
@@ -98,6 +120,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Следующая дата: "
+        android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="8pt"
         app:layout_constraintEnd_toEndOf="parent"
