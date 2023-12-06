@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.example.bankclient.repository.DatabaseHelper;
 import com.example.bankclient.ui.models.BankProduct;
 import com.example.bankclient.ui.models.IncomeExpense;
+import com.example.bankclient.ui.models.ProductSolution;
 import com.example.bankclient.ui.models.UsedBankProduct;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -41,6 +42,63 @@ public class PlotGenerator {
         String str = sb.toString();
         return str.substring(0, str.length() - 1);
     }
+
+    public static String updateProductSolution(String solution,
+                                               LocalDate dateNow){
+        String[] solA = solution.replaceAll(",", ".").split("\\|");
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i=0; i<12;i++){
+
+            if (Integer.parseInt(solA[i].split("\\.")[0])!=0){
+                stringBuilder.append(products[0].getTitle());
+                stringBuilder.append("|");
+                stringBuilder.append(dateNow);
+                stringBuilder.append("|-");
+                stringBuilder.append(solA[i].split("\\.")[0]);
+                stringBuilder.append(";");
+            }
+            if (Integer.parseInt(solA[i+12].split("\\.")[0])!=0){
+                stringBuilder.append(products[1].getTitle());
+                stringBuilder.append("|");
+                stringBuilder.append(dateNow);
+                stringBuilder.append("|-");
+                stringBuilder.append(solA[i+12].split("\\.")[0]);
+                stringBuilder.append(";");
+            }
+            if (Integer.parseInt(solA[i].split("\\.")[0])!=0){
+                stringBuilder.append(products[2].getTitle());
+                stringBuilder.append("-транш|");
+                stringBuilder.append(dateNow);
+                stringBuilder.append("|");
+                stringBuilder.append(solA[i+24].split("\\.")[0]);
+                stringBuilder.append(";");
+            }
+            if (Integer.parseInt(solA[i].split("\\.")[0])!=0){
+                stringBuilder.append(products[2].getTitle());
+                stringBuilder.append("-погашение|");
+                stringBuilder.append(dateNow);
+                stringBuilder.append("|-");
+                stringBuilder.append(solA[i+36].split("\\.")[0]);
+                stringBuilder.append(";");
+            }
+            dateNow = dateNow.plusMonths(1);
+        }
+        int fullCredit=0;
+        for (int i=0; i<12;i++){
+            fullCredit+= Integer.parseInt(String.valueOf(Double.valueOf(solA[i+24])
+                    -Double.valueOf(solA[i+36])).split("\\.")[0]);
+        }
+        if (fullCredit!=0){
+            stringBuilder.append(products[2].getTitle());
+            stringBuilder.append("-погашение|");
+            stringBuilder.append(dateNow);
+            stringBuilder.append("|-");
+            stringBuilder.append(fullCredit);
+            stringBuilder.append(";");
+        }
+        return stringBuilder.toString();
+    }
+
     public static String updatePlot(String solution,
                                     String plot,
                                     LocalDate dateNow){
@@ -50,10 +108,6 @@ public class PlotGenerator {
             plotFDOM[i] = 0.0;
         }
         String[] solA = solution.replaceAll(",", ".").split("\\|");
-//        products[0] = new BankProduct("0", "Вклад 30 дней", "30", "13%", true, "", "");
-//        products[1] = new BankProduct("1", "Вклад 180 дней", "180", "14%", true, "", "");
-//        products[2] = new BankProduct("2", "Кредитная линия 25", "0", "25%", false, "35000", "7%");
-//        products[3] = new BankProduct("2", "Кредитная линия 27", "0", "27%", false, "50000", "5%");
         // рассчеты по вкладам в первых числах месяца
 
         int[] temp = new int[365];
@@ -400,5 +454,15 @@ public class PlotGenerator {
             }
         }
         return ies;
+    }
+
+    public static ArrayList<ProductSolution> getListOfSolution(String solutionPlan) {
+        ArrayList<ProductSolution> productSolutionArrayList = new ArrayList<>();
+        for (String product : solutionPlan.split(";")){
+            productSolutionArrayList.add(new ProductSolution(product.split("\\|")[0],
+                    product.split("\\|")[1],
+                    product.split("\\|")[2]));
+        }
+        return productSolutionArrayList;
     }
 }

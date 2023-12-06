@@ -27,6 +27,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_RESPONSE="plan_response";
     private static final String COLUMN_STARTPLOT="plan_plot";
     private static final String COLUMN_SOLUTION="plan_solution";
+    private static final String COLUMN_PRODSOLUTION="plan_prod_solution";
+
 
 
     private static final String PIETABLE_NAME="plans_incomes_expenses";
@@ -76,7 +78,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         COLUMN_STATUS + " TEXT, " +
                         COLUMN_RESPONSE + " TEXT, " +
                         COLUMN_STARTPLOT + " TEXT, " +
-                        COLUMN_SOLUTION + " TEXT);";
+                        COLUMN_SOLUTION + " TEXT, " +
+                        COLUMN_PRODSOLUTION + " TEXT);";
         db.execSQL(query);
         query=
                 "CREATE TABLE " + IETABLE_NAME+
@@ -168,6 +171,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         plan_cv.put(COLUMN_RESPONSE, response);
         plan_cv.put(COLUMN_STARTPLOT, plot);
         plan_cv.put(COLUMN_SOLUTION, "");
+        plan_cv.put(COLUMN_PRODSOLUTION, "");
         long plan_cv_id = db.insert(TABLE_NAME, null, plan_cv);
         if (plan_cv_id==-1){
             Toast.makeText(context, "Ошибка ПЛАН", Toast.LENGTH_SHORT).show();
@@ -404,7 +408,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addSolutionById(Plan plan, String plot, String id){
+    public void addSolutionById(Plan plan, String plot, String id, String productSolution){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_TITLE, plan.getTitle());
@@ -414,6 +418,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_RESPONSE, plan.getResponse());
         cv.put(COLUMN_STARTPLOT, plan.getPlot());
         cv.put(COLUMN_SOLUTION, plot);
+        cv.put(COLUMN_PRODSOLUTION, productSolution);
 
         long result = db.update(TABLE_NAME, cv, "_id=?", new String[]{id});
         if (result==-1){

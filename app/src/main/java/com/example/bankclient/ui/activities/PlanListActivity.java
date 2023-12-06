@@ -100,7 +100,8 @@ public class PlanListActivity extends AppCompatActivity implements RecyclerViewI
                         cursor.getString(4),
                         cursor.getString(5),
                         cursor.getString(6),
-                        cursor.getString(7)));
+                        cursor.getString(7),
+                        cursor.getString(8)));
             }
 
         }
@@ -160,7 +161,8 @@ public class PlanListActivity extends AppCompatActivity implements RecyclerViewI
                         JSONObject jsonObject = new JSONObject(response.body());
                         stringResponse = jsonObject.get("text").toString();
                         String solution = PlotGenerator.updatePlot(stringResponse, plan.getPlot(), dateNow);
-                        db.addSolutionById(plan, solution, String.valueOf(plan.getId()));
+                        String productSolution = PlotGenerator.updateProductSolution(stringResponse, dateNow);
+                        db.addSolutionById(plan, solution, String.valueOf(plan.getId()), productSolution);
                     }catch (JSONException err){
                         Toast.makeText(PlanListActivity.this, "JSONError", Toast.LENGTH_SHORT).show();
                     }

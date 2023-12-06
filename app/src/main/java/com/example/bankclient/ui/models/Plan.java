@@ -1,9 +1,9 @@
 package com.example.bankclient.ui.models;
 
 public class Plan {
-    String id, title, date, status, response, plot, sum, solution;
+    String id, title, date, status, response, plot, sum, solution, productSolution;
 
-    public Plan(String id, String title, String date, String sum, String status, String response, String plot, String solution) {
+    public Plan(String id, String title, String date, String sum, String status, String response, String plot, String solution, String productSolution) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -12,6 +12,15 @@ public class Plan {
         this.response = response;
         this.plot = plot;
         this.solution = solution;
+        this.productSolution = productSolution;
+    }
+
+    public String getProductSolution() {
+        return productSolution;
+    }
+
+    public void setProductSolution(String productSolution) {
+        this.productSolution = productSolution;
     }
 
     public String getSolution() {

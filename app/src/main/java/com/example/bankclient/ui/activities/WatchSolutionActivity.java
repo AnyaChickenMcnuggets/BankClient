@@ -1,6 +1,8 @@
 package com.example.bankclient.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.database.Cursor;
 import android.graphics.Color;
@@ -11,6 +13,10 @@ import android.widget.Toast;
 import com.example.bankclient.R;
 import com.example.bankclient.repository.DatabaseHelper;
 import com.example.bankclient.ui.models.Plan;
+import com.example.bankclient.ui.models.ProductSolution;
+import com.example.bankclient.ui.recycler_view.PlanAdapter;
+import com.example.bankclient.ui.recycler_view.SolProdAdapter;
+import com.example.bankclient.util.interface_helper.RecyclerViewInterface;
 import com.example.bankclient.util.solution.PlotGenerator;
 import com.example.bankclient.util.watchers.DateAsXAxisWatcher;
 import com.jjoe64.graphview.GraphView;
@@ -18,12 +24,16 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 
-public class WatchSolutionActivity extends AppCompatActivity {
+public class WatchSolutionActivity extends AppCompatActivity implements RecyclerViewInterface {
     DatabaseHelper db;
+    RecyclerView recyclerView;
     GraphView graph;
     Plan plan;
+    String solutionPlan;
+    ArrayList<ProductSolution> productSolutionArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +57,20 @@ public class WatchSolutionActivity extends AppCompatActivity {
                         cursor.getString(4),
                         cursor.getString(5),
                         cursor.getString(6),
-                        cursor.getString(7));
+                        cursor.getString(7),
+                        cursor.getString(8));
             }
         }
+
+        solutionPlan = plan.getProductSolution();
+        if (!solutionPlan.equals("")){
+            recyclerView = findViewById(R.id.listPlan);
+            productSolutionArrayList = PlotGenerator.getListOfSolution(solutionPlan);
+            SolProdAdapter adapter = new SolProdAdapter(WatchSolutionActivity.this, productSolutionArrayList, this);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(WatchSolutionActivity.this));
+        }
+
         graph.getViewport().setScrollableY(true);
 
         LineGraphSeries<DataPoint> series = PlotGenerator.getSeriesFromPlot(plan.getPlot(), plan.getDate());
@@ -71,6 +92,11 @@ public class WatchSolutionActivity extends AppCompatActivity {
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setXAxisBoundsManual(true);
 
+
+    }
+
+    @Override
+    public void onItemClick(int position) {
 
     }
 }

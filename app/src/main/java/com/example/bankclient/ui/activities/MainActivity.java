@@ -41,10 +41,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
         db = new DatabaseHelper(MainActivity.this);
-//        db.addStartProduct("вклад 1", "24", "13%", "true");
-//        db.addStartProduct("вклад 2", "13", "9%", "true");
-//        db.addStartProduct("кредит 1", "12", "24%", "false");
-//        db.addStartProduct("кредит 2", "60", "22%", "false");
+//        db.addStartProduct("Вклад \"Максимальный\"", "24", "13%", "true");
+//        db.addStartProduct("Вклад \"Накопительный+\"", "13", "9%", "true");
+//        db.addStartProduct("Кредит \"Льготный\"", "12", "24%", "false");
+//        db.addStartProduct("Кредит \"для ИТ\"", "60", "22%", "false");
         textViewPlansBigStatus = findViewById(R.id.textViewPlansBigStatus);
         textViewPlansBigStatus.setText(String.valueOf(db.countAllPlans()));
     }

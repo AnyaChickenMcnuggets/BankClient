@@ -105,7 +105,7 @@
         android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Добавить"
+        android:text="Сохранить\nизменения"
         android:textColor="@color/white"
         android:padding="10dp"
         android:layout_margin="12dp"
