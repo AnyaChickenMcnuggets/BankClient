@@ -407,7 +407,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
         }
     }
+    public void addNoResponseById(Plan plan, String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_TITLE, plan.getTitle());
+        cv.put(COLUMN_DATE, plan.getDate());
+        cv.put(COLUMN_SUM, plan.getSum());
+        cv.put(COLUMN_STATUS, plan.getStatus());
+        cv.put(COLUMN_RESPONSE, "no response");
+        cv.put(COLUMN_STARTPLOT, plan.getPlot());
+        cv.put(COLUMN_SOLUTION, plan.getSolution());
+        cv.put(COLUMN_PRODSOLUTION, plan.getProductSolution());
 
+        long result = db.update(TABLE_NAME, cv, "_id=?", new String[]{id});
+        if (result==-1){
+            Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void addWaitingById(Plan plan, String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_TITLE, plan.getTitle());
+        cv.put(COLUMN_DATE, plan.getDate());
+        cv.put(COLUMN_SUM, plan.getSum());
+        cv.put(COLUMN_STATUS, plan.getStatus());
+        cv.put(COLUMN_RESPONSE, "waiting");
+        cv.put(COLUMN_STARTPLOT, plan.getPlot());
+        cv.put(COLUMN_SOLUTION, plan.getSolution());
+        cv.put(COLUMN_PRODSOLUTION, plan.getProductSolution());
+
+        long result = db.update(TABLE_NAME, cv, "_id=?", new String[]{id});
+        if (result==-1){
+            Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show();
+        }
+    }
     public void addSolutionById(Plan plan, String plot, String id, String productSolution){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -415,7 +448,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_DATE, plan.getDate());
         cv.put(COLUMN_SUM, plan.getSum());
         cv.put(COLUMN_STATUS, plan.getStatus());
-        cv.put(COLUMN_RESPONSE, plan.getResponse());
+        cv.put(COLUMN_RESPONSE, "success");
         cv.put(COLUMN_STARTPLOT, plan.getPlot());
         cv.put(COLUMN_SOLUTION, plot);
         cv.put(COLUMN_PRODSOLUTION, productSolution);

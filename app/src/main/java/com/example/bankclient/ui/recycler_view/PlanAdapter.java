@@ -41,8 +41,12 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
         holder.titleView.setText(String.valueOf(planArrayList.get(position).getTitle()));
         holder.dateView.setText(String.valueOf(planArrayList.get(position).getDate()));
 
-        holder.statusView.setImageResource(R.drawable.ic_warning);
-        holder.responseView.setImageResource(R.drawable.ic_no_data);
+        holder.statusView.setImageResource(R.drawable.ic_success);
+        String response = planArrayList.get(position).getResponse();
+        if (response.equals("no response")) holder.responseView.setImageResource(R.drawable.ic_no_data);
+        if (response.equals("success")) holder.responseView.setImageResource(R.drawable.ic_success_responce);
+        if (response.equals("waiting")) holder.responseView.setImageResource(R.drawable.ic_loading);
+
     }
 
     @Override

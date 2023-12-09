@@ -88,7 +88,7 @@ public class WatchSolutionActivity extends AppCompatActivity implements Recycler
 //        graph.getGridLabelRenderer().setHumanRounding(false);
         graph.getViewport().setMaxX(367);
         graph.getViewport().setMinY(0.00);
-        graph.getViewport().setMaxY(35000.00);
+        //graph.getViewport().setMaxY(35000.00);
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setXAxisBoundsManual(true);
 

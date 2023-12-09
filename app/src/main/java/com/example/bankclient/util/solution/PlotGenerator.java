@@ -22,8 +22,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class PlotGenerator {
-    static BankProduct products[] = {new BankProduct("0", "Вклад 30 дней", "30", "13%", true, "", ""),
-            new BankProduct("1", "Вклад 180 дней", "180", "15%", true, "", ""),
+    static BankProduct products[] = {new BankProduct("0", "Вклад \"Альтернатива\"", "30", "13%", true, "", ""),
+            new BankProduct("1", "Вклад \"Снежный\"", "180", "15%", true, "", ""),
             new BankProduct("2", "Кредитная линия 25", "0", "25%", false, "35000", "7%")};
     //,
     //            new BankProduct("2", "Кредитная линия 27", "0", "27%", false, "50000", "5%")
@@ -65,7 +65,7 @@ public class PlotGenerator {
                 stringBuilder.append(solA[i+12].split("\\.")[0]);
                 stringBuilder.append(";");
             }
-            if (Integer.parseInt(solA[i].split("\\.")[0])!=0){
+            if (Integer.parseInt(solA[i+24].split("\\.")[0])!=0){
                 stringBuilder.append(products[2].getTitle());
                 stringBuilder.append("-транш|");
                 stringBuilder.append(dateNow);
@@ -73,7 +73,7 @@ public class PlotGenerator {
                 stringBuilder.append(solA[i+24].split("\\.")[0]);
                 stringBuilder.append(";");
             }
-            if (Integer.parseInt(solA[i].split("\\.")[0])!=0){
+            if (Integer.parseInt(solA[i+36].split("\\.")[0])!=0){
                 stringBuilder.append(products[2].getTitle());
                 stringBuilder.append("-погашение|");
                 stringBuilder.append(dateNow);

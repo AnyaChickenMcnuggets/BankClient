@@ -97,8 +97,8 @@ public class AddPlanActivity extends AppCompatActivity {
                     editSum.getText().toString().trim(),
                     ids,
                     addProduct,
-                    "problem",
-                    "no response",
+                    "success",
+                    "waiting",
                     plot);
 
             Double[][] matrix = PlotGenerator.createMatrix(plot, dateNow);
@@ -114,33 +114,36 @@ public class AddPlanActivity extends AppCompatActivity {
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
+                    Cursor cursor = db.getPlanById(String.valueOf(plan_id));
+                    if (cursor.getCount()==0){
+                        Toast.makeText(AddPlanActivity.this, "No Data", Toast.LENGTH_SHORT).show();
+                    }else {
+                        while (cursor.moveToNext()){
+                            plan = new Plan(
+                                    cursor.getString(0),
+                                    cursor.getString(1),
+                                    cursor.getString(2),
+                                    cursor.getString(3),
+                                    cursor.getString(4),
+                                    cursor.getString(5),
+                                    cursor.getString(6),
+                                    cursor.getString(7),
+                                    cursor.getString(8));
+                        }
+                    }
                     if (!response.isSuccessful()){
+                        db.addNoResponseById(plan, String.valueOf(plan_id));
                         Toast.makeText(AddPlanActivity.this, response.code(), Toast.LENGTH_SHORT).show();
                         finish();
                     }
+
                     String stringResponse = "";
                     try {
                         JSONObject jsonObject = new JSONObject(response.body());
                         stringResponse = jsonObject.get("text").toString();
                         String solution = PlotGenerator.updatePlot(stringResponse, plot, dateNow);
                         String productSolution = PlotGenerator.updateProductSolution(stringResponse, dateNow);
-                        Cursor cursor = db.getPlanById(String.valueOf(plan_id));
-                        if (cursor.getCount()==0){
-                            Toast.makeText(AddPlanActivity.this, "No Data", Toast.LENGTH_SHORT).show();
-                        }else {
-                            while (cursor.moveToNext()){
-                                plan = new Plan(
-                                        cursor.getString(0),
-                                        cursor.getString(1),
-                                        cursor.getString(2),
-                                        cursor.getString(3),
-                                        cursor.getString(4),
-                                        cursor.getString(5),
-                                        cursor.getString(6),
-                                        cursor.getString(7),
-                                        cursor.getString(8));
-                            }
-                        }
+
                         db.addSolutionById(plan, solution, String.valueOf(plan_id), productSolution);
                     }catch (JSONException err){
                         Toast.makeText(AddPlanActivity.this, "JSONError", Toast.LENGTH_SHORT).show();
@@ -151,9 +154,12 @@ public class AddPlanActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
+                    db.addNoResponseById(plan, String.valueOf(plan_id));
+
                     Toast.makeText(AddPlanActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+
             finish();
         });
     }

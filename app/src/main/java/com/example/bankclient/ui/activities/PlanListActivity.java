@@ -138,6 +138,7 @@ public class PlanListActivity extends AppCompatActivity implements RecyclerViewI
         });
 
         updateLayout.setOnClickListener(v -> {
+            db.addWaitingById(plan, String.valueOf(plan.getId()));
             LocalDate dateNow = LocalDateTime.now().toLocalDate().with(TemporalAdjusters.firstDayOfNextMonth());
             Double[][] matrix = PlotGenerator.createMatrix(plan.getPlot(), dateNow);
             String matrixStr = PlotGenerator.generateStringFromMatrix(matrix);
@@ -146,13 +147,13 @@ public class PlanListActivity extends AppCompatActivity implements RecyclerViewI
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-
             api = retrofit.create(API.class);
             Call<String> call = api.addMatrix(new PostData(matrixStr,String.valueOf(matrix.length), String.valueOf(matrix[0].length)));
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     if (!response.isSuccessful()){
+                        db.addNoResponseById(plan, String.valueOf(plan.getId()));
                         Toast.makeText(PlanListActivity.this, response.code(), Toast.LENGTH_SHORT).show();
                         finish();
                     }
@@ -166,14 +167,18 @@ public class PlanListActivity extends AppCompatActivity implements RecyclerViewI
                     }catch (JSONException err){
                         Toast.makeText(PlanListActivity.this, "JSONError", Toast.LENGTH_SHORT).show();
                     }
+                    onRestart();
                     Toast.makeText(PlanListActivity.this, "Обновлено", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
+                    db.addNoResponseById(plan, String.valueOf(plan.getId()));
+                    onRestart();
                     Toast.makeText(PlanListActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+            dialog.dismiss();
         });
 
         dialog.show();
